@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pet adoption</title>
+  </head>
+  <body>
+    <h1>Pet Adoption</h1>
+    <ul>
+      <% pets.forEach(pet => { %>
+      <li>
+        <p><%= pet.pet_name %></p>
+        <p>Age: <%= pet.age %></p>
+      </li>
+
+      <% }); %>
+    </ul>
+  </body>
+</html>
