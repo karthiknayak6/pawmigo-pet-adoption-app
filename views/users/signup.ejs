@@ -1,0 +1,59 @@
+<% layout('layouts/boilerplate')%>
+<section id="signup">
+  <form action="/signup" method="post">
+    <div>
+      <h1 class="">Sign up</h1>
+      <div class="">
+        <label>First name : </label>
+        <input
+          type="text"
+          placeholder="Enter First Name"
+          name="first_name"
+          required
+        />
+      </div>
+      <div class="">
+        <label>Last Name : </label>
+        <input
+          type="text"
+          placeholder="Enter Last Name"
+          name="last_name"
+          required
+        />
+      </div>
+      <div class="">
+        <label>Email : </label>
+        <input
+          type="text"
+          placeholder="Enter your Email: "
+          name="email"
+          required
+        />
+      </div>
+      <div class="">
+        <label>Username : </label>
+        <input
+          type="text"
+          placeholder="Enter Username"
+          name="username"
+          required
+        />
+      </div>
+      <div class="">
+        <label>Password : </label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="password"
+          required
+        />
+      </div>
+
+      <p class="">Already a member ? <a href="/login" class="">Join us</a></p>
+
+      <div class="">
+        <button class="" formaction="/signup" type="submit">Register</button>
+      </div>
+    </div>
+  </form>
+</section>

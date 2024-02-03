@@ -1,10 +1,10 @@
-import mysql from "mysql2";
+import mysql from "mysql";
 
 export const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "petAdoption",
+  database: "pawmigo",
 });
 
 process.on("SIGINT", () => {

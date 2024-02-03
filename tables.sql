@@ -4,7 +4,8 @@ CREATE TABLE User (
     last_name VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Shelter (
@@ -216,9 +217,9 @@ DELIMITER ;
 
 
 -- Inserting data into the User table
-INSERT INTO User (first_name, last_name, username, email, password_hash)
-VALUES ('John', 'Doe', 'johndoe', 'john.doe@example.com', 'hashed_password1'),
-       ('Jane', 'Doe', 'janedoe', 'jane.doe@example.com', 'hashed_password2');
+INSERT INTO User (first_name, last_name, username, email, password_hash, salt)
+VALUES ('John', 'Doe', 'johndoe', 'john.doe@example.com', 'hashed_password1',"salt1"),
+       ('Jane', 'Doe', 'janedoe', 'jane.doe@example.com', 'hashed_password2', "salt2");
 
 -- Inserting data into the Shelter table
 INSERT INTO Shelter (shelter_name, username, email, password_hash, street, city, state, postal_code, country, phone)
