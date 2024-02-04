@@ -1,18 +1,237 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Pet adoption</title>
-  </head>
-  <body>
-    <h1>Pet Adoption</h1>
-    <ul>
-      <% pets.forEach(pet => { %>
-      <li>
-        <a><%= pet.pet_name %></a>
-        <p>Age: <%= pet.age %></p>
-      </li>
+<% layout('layouts/boilerplate')%>
+<section class="mx-auto container">
+  <div
+    class="bg-[url('/images/banner.png')] bg-cover bg-top h-96 w-full mt-7 rounded-3xl shadow-emerald-500 flex justify-center flex-col"
+  >
+    <div class="text-4xl font-bold text-white ml-40">Welcome to Pawmigo!</div>
+    <div class="ml-40 mt-3 text-white font-semibold text-xl">
+      Find your furry friend for life. 🐶
+    </div>
+    <a
+    href="#dog"
+      class="w-fit h-fit px-4 py-2 mx-40 mt-4 bg-light cursor-pointer hover:bg-slate-300 rounded-xl font-semibold text-dark"
+    >
+      Explore
+  </a>
+  </div>
+  <div>
+    <div>
+      <div class="flex mt-10 space-x-3">
+        <input
+          class="w-full h-14 rounded-lg text-xl pl-3"
+          type="text"
+          placeholder="Enter the location (eg: Puttur)"
+        />
+        <select class="bg-white w-32 text-xl rounded-lg text-center">
+          <option>Pet</option>
+          <option>Cat</option>
+          <option>Dog</option>
+        </select>
+        <select class="bg-white w-32 text-xl rounded-lg text-center">
+          <option>Breed</option>
+        </select>
+        <button
+          class="w-fit px-6 py-2 h-14 hover:bg-slate-300 rounded-xl font-semibold text-light text-lg bg-primary"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-evenly  bg-gradient-to-r to-[#77b6a7] from-primary_light rounded-full py-7 mt-10 mb-10"
+    >
+      <a
+      href="#dog"
+      
+        class="h-32 w-40 bg-white hover:bg-gray-200 cursor-pointer shadow-lg rounded-full flex justify-center items-center"
+      >
+        <div class="">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-dog mx-auto"
+            width="69"
+            height="69"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#2c3e50"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M11 5h2" />
+            <path
+              d="M19 12c-.667 5.333 -2.333 8 -5 8h-4c-2.667 0 -4.333 -2.667 -5 -8"
+            />
+            <path d="M11 16c0 .667 .333 1 1 1s1 -.333 1 -1h-2z" />
+            <path d="M12 18v2" />
+            <path d="M10 11v.01" />
+            <path d="M14 11v.01" />
+            <path
+              d="M5 4l6 .97l-6.238 6.688a1.021 1.021 0 0 1 -1.41 .111a.953 .953 0 0 1 -.327 -.954l1.975 -6.815z"
+            />
+            <path
+              d="M19 4l-6 .97l6.238 6.688c.358 .408 .989 .458 1.41 .111a.953 .953 0 0 0 .327 -.954l-1.975 -6.815z"
+            />
+          </svg>
+          <p class="text-center text-xl font-bold">Dogs</p>
+        </div>
+      </a>
 
-      <% }); %>
-    </ul>
-  </body>
-</html>
+      <a
+        href="#cat"
+        class="h-32 w-40 bg-white shadow-lg rounded-full flex justify-center items-center hover:bg-gray-200 cursor-pointer"
+      >
+        <div class="">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-cat mx-auto"
+            width="69"
+            height="69"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#2c3e50"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M20 3v10a8 8 0 1 1 -16 0v-10l3.432 3.432a7.963 7.963 0 0 1 4.568 -1.432c1.769 0 3.403 .574 4.728 1.546l3.272 -3.546z"
+            />
+            <path d="M2 16h5l-4 4" />
+            <path d="M22 16h-5l4 4" />
+            <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+            <path d="M9 11v.01" />
+            <path d="M15 11v.01" />
+          </svg>
+          <p class="text-center text-xl font-bold">Cats</p>
+        </div>
+      </a>
+      <a href="#other"
+        class="h-36 w-40 bg-white shadow-lg rounded-full flex justify-center items-center hover:bg-gray-200 cursor-pointer"
+      >
+        <div class="">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-inner-shadow-top-left mx-auto"
+            width="69"
+            height="69"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#2c3e50"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0 -18z" />
+            <path d="M6 12a6 6 0 0 1 6 -6" />
+          </svg>
+          <p class="text-center text-xl font-bold">Others</p>
+        </div>
+      </a>
+    </div>
+    <div class="">
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Dogs
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
+        >
+      </div>
+      <div
+      id="dog"
+        class="rounded-3xl flex w-full h-96 bg-white shadow-md justify-evenly items-center"
+      >
+        <div
+          class="h-80 w-80 py-2 bg-light flex rounded-md flex-col items-center"
+        >
+          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+            <img src="/images/dog1.jpg" class="object-cover h-full w-full" />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-1">Charlie</p>
+            <p class="text-center">Labrador retriever</p>
+            <p class="text-center italic">Bangalore</p>
+          </div>
+        </div>
+        <div
+          class="h-80 w-80 py-2 bg-light flex rounded-md flex-col items-center"
+        >
+          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+            <img src="/images/dog2.jpg" class="object-cover h-full w-full" />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-1">Biscuit</p>
+            <p class="text-center">Indian dog</p>
+            <p class="text-center italic">Pune</p>
+          </div>
+        </div>
+        <div
+          class="h-80 w-80 py-2 bg-light flex rounded-md flex-col items-center"
+        >
+          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+            <img src="/images/dog3.png" class="object-cover h-full w-full" />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-1">Batuk</p>
+            <p class="text-center">Indian dog</p>
+            <p class="text-center italic">Mangalore</p>
+          </div>
+        </div>
+        <div
+          class="h-80 w-80 py-2 bg-light flex rounded-md flex-col items-center"
+        >
+          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+            <img src="/images/dog4.jpg" class="object-cover h-full w-full" />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-1">Baloo</p>
+            <p class="text-center">Bull dog</p>
+            <p class="text-center italic">Mumbai</p>
+          </div>
+        </div>
+    </div>
+    <div class="mt-10" id="cat">
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Cats
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
+        >
+      </div>
+      <div class="rounded-3xl flex w-full h-96 bg-white shadow-md"></div>
+    </div>
+    <div class="mt-10 mb-10" id="other">
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Other Pets
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
+        >
+      </div>
+      <div class="rounded-3xl flex w-full h-96 bg-white shadow-md"></div>
+    </div>
+  </div>
+  <div></div>
+</section>

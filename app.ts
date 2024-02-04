@@ -24,13 +24,26 @@ const MySQLStore = MySQLStoreFactory(session);
 import { User } from "./types/userTypes";
 
 const PORT = 8080;
+
+const livereload = require("livereload");
+const connectLiveReload = require("connect-livereload");
+
+//Livereload code
+const liveReloadServer = livereload.createServer();
+liveReloadServer.watch(path.join(__dirname, "public"));
+liveReloadServer.server.once("connection", () => {
+  setTimeout(() => {
+    liveReloadServer.refresh("/");
+  }, 100);
+});
+
 const app = express();
+app.use(connectLiveReload());
 
 app.use(methodOverride("_method"));
 app.use(morgan("tiny"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

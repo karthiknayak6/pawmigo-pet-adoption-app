@@ -2,12 +2,14 @@
   "name": "petadoption",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon ./app.ts"
+    "dev": "nodemon ./app.ts",
+    "build-tail": "NODE_ENV=production npx tailwindcss -i ./styles/tailwindcss.css -o ./public/stylesheets/styles.css --watch",
+    "watch": "nodemon -e ts,ejs,json"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,12 @@
     "@types/mysql": "^2.15.25",
     "@types/node": "^20.11.15",
     "@types/passport-local": "^1.0.38",
+    "autoprefixer": "^10.4.17",
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.0.3",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
@@ -37,7 +45,6 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.9.1",
-    "nodemon": "^3.0.3",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7"
