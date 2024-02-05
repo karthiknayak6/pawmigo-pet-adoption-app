@@ -38,7 +38,7 @@
       </div>
     </div>
     <div
-      class="flex items-center justify-evenly bg-gradient-to-r to-[#77b6a7] from-primary_light rounded-full py-9 mt-10 mb-10"
+      class="flex items-center justify-evenly bg-gradient-to-r to-[#77b6a7] from-primary_light rounded-full py-9 mt-10 mb-10 flex-wrap"
     >
       <a
         href="#dog"
@@ -174,12 +174,83 @@
       </div>
       <div
         id="dog"
-        class="rounded-3xl flex w-full h-96 bg-white shadow-md justify-evenly items-center"
+        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
       >
+        <% for (let i=0; i < 8; i++) {%>
         <div
-          class="h-80 w-80 py-2 bg-light shadow-md flex rounded-md flex-col items-center"
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
         >
-          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+            <img
+              src="/images/evil-doge.jpg"
+              class="object-cover h-full w-full rounded-md shadow-sm"
+            />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-2">Doge</p>
+            <p class="text-center">Labrador retriever</p>
+            <p class="text-center italic">Bangalore</p>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Cats
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
+        >
+      </div>
+      <div
+        id="cat"
+        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
+      >
+        <% for (let i=0; i < 8; i++) {%>
+        <div
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+        >
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+            <img
+              src="/images/beluga.png"
+              class="object-cover h-full w-full rounded-md shadow-sm"
+            />
+          </div>
+
+          <div id="info flex justify-center items-center">
+            <p class="text-lg font-bold text-center mt-2">Beluga</p>
+            <p class="text-center">Labrador retriever</p>
+            <p class="text-center italic">Bangalore</p>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Others
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
+        >
+      </div>
+      <div
+        id="other"
+        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
+      >
+        <% for (let i=0; i < 8; i++) {%>
+        <div
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+        >
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
             <img
               src="/images/dog1.jpg"
               class="object-cover h-full w-full rounded-md shadow-sm"
@@ -187,107 +258,52 @@
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-1">Charlie</p>
+            <p class="text-lg font-bold text-center mt-2">Charlie</p>
             <p class="text-center">Labrador retriever</p>
             <p class="text-center italic">Bangalore</p>
           </div>
         </div>
-        <div
-          class="h-80 w-80 py-2 bg-light shadow-md flex rounded-md flex-col items-center"
+        <% } %>
+      </div>
+      <div
+        class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
+      >
+        <div class="text-3xl text-center text-primary font-bold ml-16">
+          Shelters
+        </div>
+        <a
+          href=""
+          class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
+          >View more</a
         >
-          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
+      </div>
+      <div
+        id="shelter"
+        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
+      >
+        <% for (let i=0; i < 8; i++) {%>
+        <div
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+        >
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
             <img
-              src="/images/dog2.jpg"
+              src="/images/dog1.jpg"
               class="object-cover h-full w-full rounded-md shadow-sm"
             />
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-1">Biscuit</p>
-            <p class="text-center">Indian dog</p>
-            <p class="text-center italic">Pune</p>
+            <p class="text-lg font-bold text-center mt-2">Charlie</p>
+            <p class="text-center">Labrador retriever</p>
+            <p class="text-center italic">Bangalore</p>
           </div>
         </div>
-        <div
-          class="h-80 w-80 py-2 bg-light shadow-md flex rounded-md flex-col items-center"
-        >
-          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
-            <img
-              src="/images/dog3.png"
-              class="object-cover h-full w-full rounded-md shadow-sm"
-            />
-          </div>
-
-          <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-1">Batuk</p>
-            <p class="text-center">Indian dog</p>
-            <p class="text-center italic">Mangalore</p>
-          </div>
-        </div>
-        <div
-          class="h-80 w-80 py-2 bg-light shadow-md flex rounded-md flex-col items-center"
-        >
-          <div id="image" class="h-56 w-72 mt-2 bg-white rounded-md">
-            <img
-              src="/images/dog4.jpg"
-              class="object-cover h-full w-full rounded-md shadow-sm"
-            />
-          </div>
-
-          <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-1">Baloo</p>
-            <p class="text-center">Bull dog</p>
-            <p class="text-center italic">Mumbai</p>
-          </div>
-        </div>
-      </div>
-      <div class="mt-10" id="cat">
-        <div
-          class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
-        >
-          <div class="text-3xl text-center text-primary font-bold ml-16">
-            Cats
-          </div>
-          <a
-            href=""
-            class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
-            >View more</a
-          >
-        </div>
-        <div class="rounded-3xl flex w-full h-96 bg-white shadow-md"></div>
-      </div>
-      <div class="mt-10 mb-10" id="other">
-        <div
-          class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
-        >
-          <div class="text-3xl text-center text-primary font-bold ml-16">
-            Other Pets
-          </div>
-          <a
-            href=""
-            class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
-            >View more</a
-          >
-        </div>
-        <div class="rounded-3xl flex w-full h-96 bg-white shadow-md"></div>
-      </div>
-      <div class="mt-10 mb-10" id="other">
-        <div
-          class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between"
-        >
-          <div class="text-3xl text-center text-primary font-bold ml-16">
-            Shelters
-          </div>
-          <a
-            href=""
-            class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
-            >View more</a
-          >
-        </div>
-        <div class="rounded-3xl flex w-full h-96 bg-white shadow-md"></div>
+        <% } %>
       </div>
     </div>
-    <div class="rounded-3xl flex w-full bg-white shadow-md mb-10 flex-col">
+    <div
+      class="rounded-3xl flex w-full bg-white shadow-md mb-10 flex-col mt-14"
+    >
       <p class="text-3xl text-primary font-bold ml-10 mt-5">Contact Us</p>
       <div class="flex flex-col ml-10 mt-6 mr-10">
         <div class="flex justify-evenly space-x-9 items-center">
