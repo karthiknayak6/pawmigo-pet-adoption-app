@@ -1,0 +1,73 @@
+<% layout('layouts/admin_boilerplate')%>
+
+<div
+  class="rounded-3xl flex w-full bg-white shadow-md mb-10 flex-col mt-6 container mx-auto"
+>
+  <p class="text-3xl text-primary font-bold ml-10 mt-5">Add a Pet</p>
+  <div class="flex flex-col ml-10 mt-6 mr-10">
+    <div class="mb-6">
+      <p class="mb-2">Add Image</p>
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/*"
+        class="w-full text-gray-700 border rounded-lg focus:outline-none cursor-pointer"
+        style="appearance: auto"
+      />
+    </div>
+    <div class="flex space-x-9 justify-evenly items-center">
+      <input
+        type="text"
+        placeholder="Enter your pet name"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md"
+      />
+      <select class="w-full h-12 bg-light px-3 rounded-md text-xl">
+        <option>Dog</option>
+        <option>Cat</option>
+        <option>Others</option>
+      </select>
+    </div>
+    <div class="flex justify-evenly space-x-9 items-center mt-4">
+      <input
+        type="text"
+        placeholder="Enter Breed"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md"
+      />
+      <input
+        type="number"
+        placeholder="Enter pet's age"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md"
+      />
+    </div>
+    <div>
+      <textarea
+        class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
+        rows="5"
+        cols="155"
+        placeholder="Enter description of the pet"
+      ></textarea>
+    </div>
+    <div>
+      <textarea
+        class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
+        rows="3"
+        cols="155"
+        placeholder="Enter the special care details (if any)"
+      ></textarea>
+    </div>
+    <!-- <textarea
+      class="text-xl bg-light px-3 rounded-md mt-4 py-2"
+      rows="5"
+      cols="155"
+      placeholder="Enter your comments"
+    ></textarea> -->
+  </div>
+  <div class="self-center">
+    <button
+      class="w-fit h-fit px-5 py-2 mx-40 mt-6 mb-6 bg-primary cursor-pointer hover:bg-primary_light rounded-xl font-semibold text-white text-lg"
+    >
+      Submit
+    </button>
+  </div>
+</div>

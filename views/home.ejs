@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate')%>
-<section class="mx-auto container">
+<section class="mx-auto container mt-28">
   <div
     class="bg-[url('/images/banner.png')] bg-cover bg-top h-96 w-full mt-7 rounded-3xl shadow-emerald-500 flex justify-center flex-col"
   >
@@ -9,7 +9,7 @@
     </div>
     <a
       href="#dog"
-      class="w-fit h-fit px-4 py-2 mx-40 mt-4 bg-light cursor-pointer hover:bg-slate-300 rounded-xl font-semibold text-dark"
+      class="w-fit h-fit px-4 py-2 mx-40 mt-4 bg-light cursor-pointer hover:bg-slate-300 rounded-md font-semibold text-dark"
     >
       Explore
     </a>
@@ -18,25 +18,30 @@
     <div>
       <div class="flex mt-10 space-x-3">
         <input
-          class="w-full h-14 rounded-lg text-xl pl-3"
+          class="loc w-full h-14 rounded-lg text-xl pl-3"
           type="text"
           placeholder="Enter the location (eg: Puttur)"
+          name="loc"
         />
-        <select class="bg-white w-32 text-xl rounded-lg text-center">
-          <option>Pet</option>
-          <option>Cat</option>
-          <option>Dog</option>
+        <select class="petSelect bg-white w-32 text-xl rounded-lg text-center">
+          <option value="pet">Pet</option>
+          <option value="cat">Cat</option>
+          <option value="dog">Dog</option>
         </select>
-        <select class="bg-white w-32 text-xl rounded-lg text-center">
-          <option>Breed</option>
+        <select
+          class="breedSelect bg-white w-32 text-xl rounded-lg text-center"
+        >
+          <option value="breed">Breed</option>
         </select>
-        <button
-          class="w-fit px-6 py-2 h-14 hover:bg-slate-300 rounded-xl font-semibold text-light text-lg bg-primary"
+        <a
+          onclick="handleClick()"
+          class="w-fit px-6 py-3 mx-40 bg-primary text-white cursor-pointer hover:bg-primary_light rounded-md font-semibold"
         >
           Search
-        </button>
+        </a>
       </div>
     </div>
+
     <div
       class="flex items-center justify-evenly bg-gradient-to-r to-[#77b6a7] from-primary_light rounded-full py-9 mt-10 mb-10 flex-wrap"
     >
@@ -167,7 +172,7 @@
           Dogs
         </div>
         <a
-          href=""
+          href="/search/dog"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -178,17 +183,18 @@
       >
         <% for (let i=0; i < 8; i++) {%>
         <div
-          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+          onclick="window.location.href = `pets/${12}`"
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
         >
-          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
             <img
               src="/images/evil-doge.jpg"
-              class="object-cover h-full w-full rounded-md shadow-sm"
+              class="object-cover h-full w-full rounded-t-md shadow-sm"
             />
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-2">Doge</p>
+            <p class="text-lg font-bold text-center mt-2 text-primary">Doge</p>
             <p class="text-center">Labrador retriever</p>
             <p class="text-center italic">Bangalore</p>
           </div>
@@ -202,7 +208,7 @@
           Cats
         </div>
         <a
-          href=""
+          href="/search/cat"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -213,17 +219,19 @@
       >
         <% for (let i=0; i < 8; i++) {%>
         <div
-          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
         >
-          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
             <img
               src="/images/beluga.png"
-              class="object-cover h-full w-full rounded-md shadow-sm"
+              class="object-cover h-full w-full rounded-t-md shadow-sm"
             />
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-2">Beluga</p>
+            <p class="text-lg font-bold text-center mt-2 text-primary">
+              Beluga
+            </p>
             <p class="text-center">Labrador retriever</p>
             <p class="text-center italic">Bangalore</p>
           </div>
@@ -237,7 +245,7 @@
           Others
         </div>
         <a
-          href=""
+          href="/search/other"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -246,19 +254,21 @@
         id="other"
         class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
       >
-        <% for (let i=0; i < 8; i++) {%>
+        <% for (let i=0; i < 4; i++) {%>
         <div
-          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
         >
-          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
             <img
               src="/images/dog1.jpg"
-              class="object-cover h-full w-full rounded-md shadow-sm"
+              class="object-cover h-full w-full rounded-t-md shadow-sm"
             />
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-2">Charlie</p>
+            <p class="text-lg font-bold text-center mt-2 text-primary">
+              Charlie
+            </p>
             <p class="text-center">Labrador retriever</p>
             <p class="text-center italic">Bangalore</p>
           </div>
@@ -272,7 +282,7 @@
           Shelters
         </div>
         <a
-          href=""
+          href="/search/shelter"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -281,19 +291,21 @@
         id="shelter"
         class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
       >
-        <% for (let i=0; i < 8; i++) {%>
+        <% for (let i=0; i < 4; i++) {%>
         <div
-          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2"
+          class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
         >
-          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-md">
+          <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
             <img
               src="/images/dog1.jpg"
-              class="object-cover h-full w-full rounded-md shadow-sm"
+              class="object-cover h-full w-full rounded-t-md shadow-sm"
             />
           </div>
 
           <div id="info flex justify-center items-center">
-            <p class="text-lg font-bold text-center mt-2">Charlie</p>
+            <p class="text-lg font-bold text-center mt-2 text-primary">
+              Charlie
+            </p>
             <p class="text-center">Labrador retriever</p>
             <p class="text-center italic">Bangalore</p>
           </div>

@@ -1,0 +1,18 @@
+<% layout('layouts/admin_boilerplate')%>
+<div>
+  <% for (i=0; i< 5; i++) { %>
+  <div
+    class="mb-10 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
+  >
+    <p>Karthik</p>
+    <p>Beluga</p>
+    <p>I want this car so badly...</p>
+    <div>
+      <button class="py-2 px-3 bg-green-700 text-white rounded-md">
+        Approve
+      </button>
+      <button class="py-2 px-3 bg-red-700 text-white rounded-md">Reject</button>
+    </div>
+  </div>
+  <% } %>
+</div>

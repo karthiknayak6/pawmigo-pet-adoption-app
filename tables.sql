@@ -27,6 +27,7 @@ CREATE TABLE Pet (
     pet_id INT AUTO_INCREMENT PRIMARY KEY,
     pet_name VARCHAR(255) NOT NULL,
     age INT NOT NULL,
+    description TEXT DEFAULT NULL
     special_care_required TEXT DEFAULT NULL,
     shelter_id INT NOT NULL,
     is_available BOOLEAN DEFAULT TRUE NOT NULL,

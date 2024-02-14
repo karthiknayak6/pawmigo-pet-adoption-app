@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pawmigo</title>
+    <link href="/stylesheets/styles.css" rel="stylesheet" />
+    <link href="/stylesheets/admin_styles.css" rel="stylesheet" />
+  </head>
+
+  <body class="bg-light">
+    <%- include('../partials/navbar')%>
+    <main class="">
+      <%- include('../partials/flash')%>
+      <div
+        class="mb-10 shadow-sm py-6 bg-white rounded-md flex w-full justify-around container mx-auto mt-28 text-3xl font-bold text-primary"
+      >
+        Welcome, Bengaluru Paws!
+      </div>
+      <div
+        class="mb-4 shadow-sm py-3 bg-white rounded-full flex w-full justify-around container mx-auto"
+      >
+        <a href="/admin/" class="text-xl text-center text-gray-500 font-bold"
+          >All Pets</a
+        >
+        <a
+          href="/admin/add_pet"
+          class="text-xl text-center text-gray-500 font-bold"
+          >Add Pet</a
+        >
+        <a
+          href="/admin/requests"
+          class="text-xl text-center text-gray-500 font-bold"
+        >
+          Customer Requests
+        </a>
+        <a
+          href="/admin/history"
+          class="text-xl text-center text-gray-500 font-bold"
+          >History</a
+        >
+      </div>
+      <%- body %>
+    </main>
+    <%- include('../partials/footer')%>
+  </body>
+</html>

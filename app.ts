@@ -22,6 +22,7 @@ const session = require("express-session");
 const MySQLStore = MySQLStoreFactory(session);
 
 import { User } from "./types/userTypes";
+import { adminRouter } from "./routes/admin";
 
 const PORT = 8080;
 
@@ -198,6 +199,7 @@ app.use((req, res, next) => {
 
 app.use("/", authRouter);
 app.use("/", petRouter);
+app.use("/admin", adminRouter);
 app.get("/protected-route", isAuth, (req, res, next) => {
   res.send(
     '<h1>You are authenticated</h1><p><a href="/logout">Logout and reload</a></p>'
