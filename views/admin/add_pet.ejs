@@ -3,71 +3,139 @@
 <div
   class="rounded-3xl flex w-full bg-white shadow-md mb-10 flex-col mt-6 container mx-auto"
 >
-  <p class="text-3xl text-primary font-bold ml-10 mt-5">Add a Pet</p>
-  <div class="flex flex-col ml-10 mt-6 mr-10">
-    <div class="mb-6">
-      <p class="mb-2">Add Image</p>
-      <input
-        type="file"
-        id="image"
-        name="image"
-        accept="image/*"
-        class="w-full text-gray-700 border rounded-lg focus:outline-none cursor-pointer"
-        style="appearance: auto"
-      />
-    </div>
-    <div class="flex space-x-9 justify-evenly items-center">
-      <input
-        type="text"
-        placeholder="Enter your pet name"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-      <select class="w-full h-12 bg-light px-3 rounded-md text-xl">
-        <option>Dog</option>
-        <option>Cat</option>
-        <option>Others</option>
-      </select>
-    </div>
-    <div class="flex justify-evenly space-x-9 items-center mt-4">
-      <input
-        type="text"
-        placeholder="Enter Breed"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-      <input
-        type="number"
-        placeholder="Enter pet's age"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-    </div>
-    <div>
-      <textarea
-        class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
-        rows="5"
-        cols="155"
-        placeholder="Enter description of the pet"
-      ></textarea>
-    </div>
-    <div>
-      <textarea
-        class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
-        rows="3"
-        cols="155"
-        placeholder="Enter the special care details (if any)"
-      ></textarea>
-    </div>
-    <!-- <textarea
+  <form
+    action="http://localhost:8080/admin/add_pet"
+    method="POST"
+    enctype="multipart/form-data"
+    class="flex flex-col"
+  >
+    <p class="text-3xl text-primary font-bold ml-10 mt-5">Add a Pet</p>
+    <div class="flex flex-col ml-10 mt-6 mr-10">
+      <div class="mb-6">
+        <p class="mb-2">Add Image</p>
+        <input
+          type="file"
+          id="image"
+          name="image"
+          class="w-full text-gray-700 border rounded-lg focus:outline-none cursor-pointer"
+          style="appearance: auto"
+        />
+      </div>
+      <div class="flex space-x-2 justify-evenly items-center">
+        <input
+          type="text"
+          placeholder="Enter your pet name"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+          name="pet_name"
+          required
+        />
+        <select
+          name="type"
+          class="w-full h-12 bg-light px-3 rounded-md text-xl"
+          required
+        >
+          <option value="" disabled selected>Select Type</option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="others">Others</option>
+        </select>
+      </div>
+      <div class="flex justify-evenly space-x-2 items-center mt-4">
+        <input
+          type="number"
+          placeholder="Enter pet's age"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+          name="age"
+          required
+        />
+      </div>
+
+      <div>
+        <textarea
+          class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
+          rows="5"
+          cols="155"
+          placeholder="Enter description of the pet"
+          name="description"
+          required
+        ></textarea>
+      </div>
+      <div>
+        <textarea
+          class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
+          rows="3"
+          cols="155"
+          placeholder="Enter the special care details (if any)"
+          name="special_care_required"
+        ></textarea>
+      </div>
+      <!-- <textarea
       class="text-xl bg-light px-3 rounded-md mt-4 py-2"
       rows="5"
       cols="155"
       placeholder="Enter your comments"
     ></textarea> -->
-  </div>
-  <div class="self-center">
-    <button
-      class="w-fit h-fit px-5 py-2 mx-40 mt-6 mb-6 bg-primary cursor-pointer hover:bg-primary_light rounded-xl font-semibold text-white text-lg"
-    >
-      Submit
-    </button>
-  </div>
+    </div>
+
+    <h2 class="text-3xl text-primary font-bold ml-10 mt-5">Breed Details</h2>
+    <div class="flex flex-col ml-10 mt-6 mr-10">
+      <div class="flex space-x-2">
+        <input
+          type="text"
+          placeholder="Enter Breed name"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+          name="breed"
+          required
+        />
+        <select
+          name="size"
+          class="w-full h-12 bg-light px-3 rounded-md text-xl"
+          required
+        >
+          <option value="" disabled selected>Select size</option>
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+
+        <select
+          name="avg_life_span"
+          class="w-full h-12 bg-light px-3 rounded-md text-xl"
+          required
+        >
+          <option value="" selected disabled>Average Life Span</option>
+          <option value="2-4">2-4 years</option>
+          <option value="4-6">4-6 years</option>
+          <option value="6-8">6-8 years</option>
+          <option value="8-10">8-10 years</option>
+          <option value="10-12">10-12 years</option>
+          <option value="12-14">12-14 years</option>
+          <option value="14-16">14-16 years</option>
+          <option value="16-18">16-18 years</option>
+          <option value="18-20">18-20 years</option>
+          <option value="20-25">20-25 years</option>
+          <option value="25-30">25-30 years</option>
+          <option value=">30">Over 30 years</option>
+        </select>
+      </div>
+      <div>
+        <textarea
+          class="text-xl bg-light px-3 rounded-md mt-4 py-2 w-full"
+          rows="3"
+          cols="155"
+          placeholder="Enter Breed Description"
+          name="breed_desc"
+          required
+        ></textarea>
+      </div>
+    </div>
+    <div class="self-center">
+      <button
+        type="submit"
+        class="w-fit h-fit px-5 py-2 mx-40 mt-6 mb-6 bg-primary cursor-pointer hover:bg-primary_light rounded-xl font-semibold text-white text-lg"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
 </div>

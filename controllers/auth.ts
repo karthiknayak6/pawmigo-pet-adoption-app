@@ -37,7 +37,7 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = passport.authenticate("local", {
   failureRedirect: "/login-failure",
-  successRedirect: "/login-success",
+  successRedirect: "/",
 });
 
 export const logout = (req: Request, res: Response, next: NextFunction) => {

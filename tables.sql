@@ -27,7 +27,7 @@ CREATE TABLE Pet (
     pet_id INT AUTO_INCREMENT PRIMARY KEY,
     pet_name VARCHAR(255) NOT NULL,
     age INT NOT NULL,
-    description TEXT DEFAULT NULL
+    description TEXT DEFAULT NULL,
     special_care_required TEXT DEFAULT NULL,
     shelter_id INT NOT NULL,
     is_available BOOLEAN DEFAULT TRUE NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE Pet (
 
 CREATE TABLE Breed (
     pet_id INT NOT NULL PRIMARY KEY,
-    type ENUM('cat', 'dog') NOT NULL,
+    type ENUM('cat', 'dog', 'other') NOT NULL,
     breed VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     size VARCHAR(255) NOT NULL,
@@ -46,9 +46,9 @@ CREATE TABLE Breed (
 
 CREATE TABLE PetImage (
     pet_id INT NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
-    PRIMARY  KEY (pet_id, image_url),
-    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id)
+    image_name VARCHAR(255) NOT NULL,
+    PRIMARY  KEY (pet_id, image_name),
+    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) 
 );
 
 CREATE TABLE AdoptionRequest (
@@ -130,17 +130,19 @@ CREATE PROCEDURE AddNewPet(
     IN p_type ENUM('cat', 'dog'),
     IN p_breed VARCHAR(255),
     IN p_description TEXT,
+    IN breed_description TEXT,
     IN p_size VARCHAR(255),
-    IN p_avg_life_span VARCHAR(255)
+    IN p_avg_life_span VARCHAR(255),
+    OUT p_pet_id INT
 )
 BEGIN
-    INSERT INTO Pet (pet_name, age, special_care_required, shelter_id)
-    VALUES (p_pet_name, p_age, p_special_care_required, p_shelter_id);
+    INSERT INTO Pet (pet_name, age, description, special_care_required, shelter_id)
+    VALUES (p_pet_name, p_age,p_description, p_special_care_required, p_shelter_id);
     
-    SET @last_pet_id = LAST_INSERT_ID();
+    SET p_pet_id = LAST_INSERT_ID();
     
     INSERT INTO Breed (pet_id, type, breed, description, size, avg_life_span)
-    VALUES (@last_pet_id, p_type, p_breed, p_description, p_size, p_avg_life_span);
+    VALUES (p_pet_id, p_type, p_breed, breed_description, p_size, p_avg_life_span);
 END //
 
 /* Adopt Pet Procedure: This procedure will insert a new record into the AdoptionHistory table */
@@ -237,7 +239,7 @@ VALUES (1, 'dog', 'Labrador', 'Friendly and outgoing', 'Medium', '10-12 years'),
        (2, 'cat', 'Persian', 'Quiet and sweet', 'Small', '10-15 years');
 
 -- Inserting data into the PetImage table
-INSERT INTO PetImage (pet_id, image_url)
+INSERT INTO PetImage (pet_id, image_name)
 VALUES (1, 'image_url1'),
        (2, 'image_url2');
 

@@ -18,6 +18,7 @@ import MySQLStoreFactory from "express-mysql-session";
 import mysql from "mysql";
 
 const session = require("express-session");
+import flash from "express-flash";
 
 const MySQLStore = MySQLStoreFactory(session);
 
@@ -48,6 +49,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.use(flash());
 
 app.use(
   session({
@@ -192,14 +195,26 @@ export function userExists(req: Request, res: Response, next: NextFunction) {
 }
 
 app.use((req, res, next) => {
-  // console.log(req.session);
-  // console.log(req.user);
+  console.log(req.session);
+  console.log("REQ DOT USER --> ", req.user);
   next();
 });
+
+const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.isAuthenticated()) {
+    (req.session as any).returnTo = req.originalUrl;
+
+    req.flash("error", "You must be logged in first!");
+    return res.redirect("/login");
+  }
+
+  next();
+};
 
 app.use("/", authRouter);
 app.use("/", petRouter);
 app.use("/admin", adminRouter);
+
 app.get("/protected-route", isAuth, (req, res, next) => {
   res.send(
     '<h1>You are authenticated</h1><p><a href="/logout">Logout and reload</a></p>'

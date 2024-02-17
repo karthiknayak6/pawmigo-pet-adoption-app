@@ -28,3 +28,7 @@ export const renderSearchResults = (req: Request, res: Response) => {
 export const renderShowPet = (req: Request, res: Response) => {
   res.render("pets/show_pet");
 };
+
+export const renderAdoptPet = (req: Request, res: Response) => {
+  res.render("pets/adopt");
+};

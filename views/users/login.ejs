@@ -1,34 +1,44 @@
 <% layout('layouts/boilerplate')%>
-<section id="login">
-  <form action="/login" method="post">
-    <div class="container logindiv">
-      <h1 class="logintitle">Login</h1>
-      <div class="inp">
-        <label>Username : </label>
+<section id="login" class="">
+  <div
+    class="flex justify-center items-center h-screen w-screen font-body bg-primary_light"
+  >
+    <div
+      class="border-2 rounded-md shadow-sm px-12 pt-12 bg-white flex flex-col"
+    >
+      <h1 class="mb-10 text-3xl font-semibold self-center text-primary-300">
+        Login
+      </h1>
+      <form class="flex flex-col" method="post" action="/login">
+        <label class="text-md" for="username"> Username: </label>
         <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-64"
           type="text"
-          placeholder="Enter Username"
           name="username"
+          id="username"
           required
         />
-      </div>
-      <div class="">
-        <label class="">Password : </label>
+        <label class="text-md" for="password"> Password: </label>
         <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-64"
           type="password"
-          placeholder="Enter Password"
           name="password"
+          id="password"
           required
         />
-      </div>
-
-      <p class="textp">
-        Not a member yet ? <a href="/signup" class="to_register">Join us</a>
-      </p>
-
-      <div class="">
-        <button class="" formaction="/login" type="submit">Login</button>
-      </div>
+        <button
+          type="submit"
+          class="mt-4 py-1 w-24 text-white bg-primary text-lg border border-primary-300 rounded-md self-center hover:text-primary-300 hover:bg-white hover:shadow-sm font-bold"
+        >
+          Login
+        </button>
+        <p class="self-center mt-7 mb-7">
+          Don't have an account?
+          <a href="/signup" class="cursor-pointer text-primary font-bold">
+            Register
+          </a>
+        </p>
+      </form>
     </div>
-  </form>
+  </div>
 </section>

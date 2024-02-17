@@ -1,59 +1,68 @@
 <% layout('layouts/boilerplate')%>
 <section id="signup">
-  <form action="/signup" method="post">
-    <div>
-      <h1 class="">Sign up</h1>
-      <div class="">
-        <label>First name : </label>
+  <div
+    class="flex justify-center items-center h-screen w-screen font-body bg-primary_light"
+  >
+    <div
+      class="border-2 rounded-md shadow-sm px-14 pt-12 bg-white flex flex-col"
+    >
+      <h1 class="mb-10 text-3xl font-semibold self-center text-primary">
+        Sign Up
+      </h1>
+      <form class="flex flex-col" method="post" action="/signup">
+        <label class="text-md" for="first_name"> First name: </label>
         <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-72 px-1"
           type="text"
-          placeholder="Enter First Name"
           name="first_name"
+          id="first_name"
           required
         />
-      </div>
-      <div class="">
-        <label>Last Name : </label>
+        <label class="text-md" for="last_name"> Last name: </label>
         <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-72 px-1"
           type="text"
-          placeholder="Enter Last Name"
           name="last_name"
+          id="last_name"
           required
         />
-      </div>
-      <div class="">
-        <label>Email : </label>
+        <label class="text-md" for="username"> Username: </label>
         <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-72 px-1"
           type="text"
-          placeholder="Enter your Email: "
-          name="email"
-          required
-        />
-      </div>
-      <div class="">
-        <label>Username : </label>
-        <input
-          type="text"
-          placeholder="Enter Username"
           name="username"
+          id="username"
           required
         />
-      </div>
-      <div class="">
-        <label>Password : </label>
+        <label class="text-md" for="email"> Email: </label>
         <input
-          type="password"
-          placeholder="Enter Password"
-          name="password"
+          class="mb-4 mt-2 border rounded-sm h-8 w-72 px-1"
+          type="email"
+          name="email"
+          id="email"
           required
         />
-      </div>
-
-      <p class="">Already a member ? <a href="/login" class="">Join us</a></p>
-
-      <div class="">
-        <button class="" formaction="/signup" type="submit">Register</button>
-      </div>
+        <label class="text-md" for="password"> Password: </label>
+        <input
+          class="mb-4 mt-2 border rounded-sm h-8 w-72 px-1"
+          type="password"
+          name="password"
+          id="password"
+          required
+        />
+        <button
+          type="submit"
+          class="mt-4 py-1 w-24 text-white bg-primary text-lg font-semibold border border-primary rounded-md self-center"
+        >
+          Register
+        </button>
+        <p class="self-center mt-5 mb-7">
+          Already have an account?
+          <a href="/login" class="cursor-pointer text-primary font-bold">
+            Login
+          </a>
+        </p>
+      </form>
     </div>
-  </form>
+  </div>
 </section>
