@@ -34,7 +34,7 @@ adminRouter.route("/signup").get(renderAdminSignup).post(adminSignup);
 adminRouter.route("/login").get(renderAdminLogin).post(adminLogin);
 adminRouter
   .route("/add_pet")
-  .get(renderAddPet)
-  .post(upload.single("image"), addPet);
+  .get(isAdminLoggedIn, renderAddPet)
+  .post(isAdminLoggedIn, upload.single("image"), addPet);
 adminRouter.route("/requests").get(renderRequests);
 adminRouter.route("/history").get(renderHistory);

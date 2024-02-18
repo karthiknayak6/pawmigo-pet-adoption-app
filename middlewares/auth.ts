@@ -7,6 +7,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import passport from "passport";
 import crypto from "crypto";
 import { Shelter } from "../types/shelterTypes";
+
 export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated() && "user_id" in req.user && req.user.user_id) {
     next();

@@ -48,7 +48,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
       console.error(err);
       next(err);
     } else {
-      res.redirect("/protected-route");
+      res.redirect("/");
     }
   });
 };

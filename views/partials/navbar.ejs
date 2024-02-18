@@ -49,20 +49,21 @@
         </div>
       </a>
       <div class="flex space-x-4">
+        <% if(!currentUser) { %>
         <a
           href="/login"
           class="hover:text-gray-400 font-medium text-gray-700 text-xl"
         >
           Login
         </a>
-
+        <% } else { %>
         <a
           class="hover:text-gray-400 text-red-600 text-xl cursor-pointer"
           href="/logout"
         >
           Log out
         </a>
-
+        <% } %>
         <div class="relative inline-block text-left" id="menu">
           <div>
             <button

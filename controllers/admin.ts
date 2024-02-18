@@ -6,6 +6,7 @@ import { FieldInfo } from "mysql";
 
 import passport from "passport";
 import { genPassword } from "../middlewares/auth";
+import { Shelter } from "../types/shelterTypes";
 
 export const renderAdminLogin = (
   req: Request,
@@ -121,7 +122,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
       console.error(err);
       next(err);
     } else {
-      res.redirect("/protected-route");
+      res.redirect("/admin");
     }
   });
 };
@@ -139,8 +140,18 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
       avg_life_span,
       breed_desc,
     }: Pet = req.body;
+    let shelter_id: number;
 
-    const shelter_id = 1;
+    if (
+      req.user &&
+      "shelter_id" in req.user &&
+      typeof req.user.shelter_id === "number"
+    ) {
+      shelter_id = req.user.shelter_id;
+    } else {
+      res.send("No shelter is present");
+      return;
+    }
 
     con.query(
       "CALL AddNewPet(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @pet_id)",
@@ -188,7 +199,7 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
           const imagePath = req.file?.path;
           con.query(
             "INSERT INTO PetImage (pet_id, image_name) VALUES (?, ?)",
-            [petId, imagePath],
+            [petId, imagePath?.replace(/^public/, "")],
             function (error) {
               if (error) {
                 console.error("Error adding pet image:", error);

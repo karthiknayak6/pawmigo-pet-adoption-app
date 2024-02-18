@@ -7,16 +7,20 @@ interface Response extends ExpressResponse {
 }
 
 export const renderHome = async (req: Request, res: Response) => {
-  con.query("CALL GetAvailablePets()", (err, results: RowDataPacket[][]) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).send("Internal Server Error");
-      return;
-    }
+  con.query(
+    "SELECT * FROM AvailablePets",
+    (err, results: RowDataPacket[][]) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
 
-    console.log("Query result:", results);
-    res.render("home", { pets: results[0] });
-  });
+      console.log("Query result:", results);
+      if ("images" in results[0]) console.log("Images: ", results[0].images);
+      res.render("home", { pets: results });
+    }
+  );
 };
 
 export const renderSearchResults = (req: Request, res: Response) => {

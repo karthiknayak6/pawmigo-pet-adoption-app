@@ -100,11 +100,32 @@ DELIMITER ;
 /* VIEWS */
 
 -- View of all available pets
-CREATE VIEW AvailablePets AS
+/* CREATE VIEW AvailablePets AS
 SELECT Pet.pet_id, Pet.pet_name, Pet.age, Pet.special_care_required, Shelter.shelter_name
 FROM Pet
 JOIN Shelter ON Pet.shelter_id = Shelter.shelter_id
-WHERE Pet.is_available = TRUE;
+WHERE Pet.is_available = TRUE; */
+
+CREATE VIEW AvailablePets AS
+SELECT 
+    Pet.pet_id,
+    Pet.pet_name,
+    Pet.age,
+    Pet.special_care_required,
+    Breed.type AS pet_type,
+    Breed.breed,
+    Breed.description AS breed_description,
+    Breed.size,
+    Breed.avg_life_span,
+    GROUP_CONCAT(PetImage.image_name) AS images,
+    Shelter.shelter_name
+FROM Pet
+JOIN Breed ON Pet.pet_id = Breed.pet_id
+JOIN PetImage ON Pet.pet_id = PetImage.pet_id
+JOIN Shelter ON Pet.shelter_id = Shelter.shelter_id
+WHERE Pet.is_available = TRUE
+GROUP BY Pet.pet_id;
+
 
 -- View of all users who have made an adoption request
 CREATE VIEW UsersWithAdoptionRequest AS
