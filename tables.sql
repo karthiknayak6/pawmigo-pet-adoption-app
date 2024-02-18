@@ -14,6 +14,7 @@ CREATE TABLE Shelter (
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     state VARCHAR(255) NOT NULL,
@@ -31,7 +32,7 @@ CREATE TABLE Pet (
     special_care_required TEXT DEFAULT NULL,
     shelter_id INT NOT NULL,
     is_available BOOLEAN DEFAULT TRUE NOT NULL,
-    FOREIGN KEY (shelter_id) REFERENCES Shelter(shelter_id)
+    FOREIGN KEY (shelter_id) REFERENCES Shelter(shelter_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Breed (
@@ -41,14 +42,14 @@ CREATE TABLE Breed (
     description TEXT NOT NULL,
     size VARCHAR(255) NOT NULL,
     avg_life_span VARCHAR(255) NOT NULL,
-    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id)
+    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) ON DELETE CASCADE
 );
 
 CREATE TABLE PetImage (
     pet_id INT NOT NULL,
     image_name VARCHAR(255) NOT NULL,
     PRIMARY  KEY (pet_id, image_name),
-    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) 
+    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) ON DELETE CASCADE 
 );
 
 CREATE TABLE AdoptionRequest (
@@ -62,16 +63,16 @@ CREATE TABLE AdoptionRequest (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (pet_id, user_id),
-    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id),
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE AdoptionHistory (
     pet_id INT NOT NULL PRIMARY KEY,
     user_id INT NOT NULL,
     adoption_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id),
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
 );
 
 
@@ -216,7 +217,7 @@ DELIMITER ;
 
 
 
-/* DATA INSERTION */
+/* DATA INSERTION
 
 
 -- Inserting data into the User table
@@ -225,8 +226,8 @@ VALUES ('John', 'Doe', 'johndoe', 'john.doe@example.com', 'hashed_password1',"sa
        ('Jane', 'Doe', 'janedoe', 'jane.doe@example.com', 'hashed_password2', "salt2");
 
 -- Inserting data into the Shelter table
-INSERT INTO Shelter (shelter_name, username, email, password_hash, street, city, state, postal_code, country, phone)
-VALUES ('Happy Pets', 'happypets', 'happypets@example.com', 'hashed_password3', '1234 Pet Street', 'Pet City', 'Pet State', '12345', 'Pet Country', '123-456-7890');
+INSERT INTO Shelter (shelter_name, username, email, password_hash,salt, street, city, state, postal_code, country, phone)
+VALUES ('Happy Pets', 'happypets', 'happypets@example.com', 'hashed_password3','salt3', '1234 Pet Street', 'Pet City', 'Pet State', '12345', 'Pet Country', '123-456-7890');
 
 -- Inserting data into the Pet table
 INSERT INTO Pet (pet_name, age, special_care_required, shelter_id)
@@ -250,4 +251,4 @@ VALUES (1, 1, 'pending', 'House', 'Companion', 'Looking for a friendly pet', 'Wi
 -- Inserting data into the AdoptionHistory table
 -- Note: This is just a sample. In a real-world scenario, data in this table would be inserted when an adoption is finalized.
 INSERT INTO AdoptionHistory (pet_id, user_id)
-VALUES (2, 2);
+VALUES (2, 2); */

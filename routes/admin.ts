@@ -2,18 +2,23 @@ import express from "express";
 import { Request, Response, NextFunction } from "express";
 import {
   addPet,
+  adminLogin,
+  adminSignup,
   renderAddPet,
   renderAdminHome,
+  renderAdminLogin,
+  renderAdminSignup,
   renderHistory,
   renderRequests,
 } from "../controllers/admin";
 
 import multer from "multer";
 import path from "path";
+import { isAdminLoggedIn, isLoggedIn } from "../middlewares/auth";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "pet_images");
+    cb(null, "public/pet_images");
   },
 
   filename: (req, file, cb) => {
@@ -24,7 +29,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
-adminRouter.route("/").get(renderAdminHome);
+adminRouter.route("/").get(isAdminLoggedIn, renderAdminHome);
+adminRouter.route("/signup").get(renderAdminSignup).post(adminSignup);
+adminRouter.route("/login").get(renderAdminLogin).post(adminLogin);
 adminRouter
   .route("/add_pet")
   .get(renderAddPet)

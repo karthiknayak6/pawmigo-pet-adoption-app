@@ -1,8 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import { con } from "../model/db";
 import { Pet } from "../types/petTypes";
-import { QueryError, RowDataPacket } from "mysql2";
+import { FieldPacket, QueryError, RowDataPacket } from "mysql2";
 import { FieldInfo } from "mysql";
+
+import passport from "passport";
+import { genPassword } from "../middlewares/auth";
+
+export const renderAdminLogin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.render("admin/login");
+};
+
+export const renderAdminSignup = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.render("admin/signup");
+};
 
 export const renderAdminHome = (
   req: Request,
@@ -19,6 +38,93 @@ export const renderAddPet = (
 ) => {
   res.render("admin/add_pet");
 };
+export const adminSignup = async (req: Request, res: Response) => {
+  console.log("Inside post");
+
+  const {
+    shelter_name,
+    username,
+    email,
+    password,
+    street,
+    city,
+    state,
+    postal_code,
+    country,
+    phone,
+  } = req.body;
+  console.log(password);
+  const saltHash = genPassword(password);
+  console.log(saltHash);
+  const salt = saltHash.salt;
+  const hash = saltHash.hash;
+
+  const insertQuery = `
+  INSERT INTO Shelter (
+    shelter_name,
+    username,
+    email,
+    password_hash,
+    salt,
+    street,
+    city,
+    state,
+    postal_code,
+    country,
+    phone
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+`;
+
+  const values = [
+    shelter_name,
+    username,
+    email,
+    hash,
+    salt,
+    street,
+    city,
+    state,
+    postal_code,
+    country,
+    phone,
+  ];
+
+  con.query(
+    insertQuery,
+    values,
+    (
+      error: Error | null,
+      results: RowDataPacket[],
+      fields: FieldPacket[] | FieldInfo[] | undefined
+    ) => {
+      if (error) {
+        console.error("Error inserting shelter:", error);
+        res.status(500).send("Error inserting shelter");
+        return;
+      }
+
+      console.log("Shelter inserted successfully:", results);
+      res.status(200).send("Shelter inserted successfully");
+    }
+  );
+};
+
+export const adminLogin = passport.authenticate("shelter", {
+  failureRedirect: "/login-failure",
+  successRedirect: "/admin",
+});
+
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+  req.logout({}, (err) => {
+    if (err) {
+      // Handle error
+      console.error(err);
+      next(err);
+    } else {
+      res.redirect("/protected-route");
+    }
+  });
+};
 
 export const addPet = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -34,11 +140,10 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
       breed_desc,
     }: Pet = req.body;
 
-    const shelter_id = 1; // Assuming shelter_id is always 1 for now
+    const shelter_id = 1;
 
-    // Assuming con is your MySQL connection
     con.query(
-      "CALL AddNewPet(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @pet_id)", // Using @pet_id to capture the returned pet_id
+      "CALL AddNewPet(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @pet_id)",
       [
         pet_name,
         age,
@@ -62,7 +167,6 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
           return;
         }
 
-        // Retrieve the pet_id from the stored procedure output parameter
         con.query("SELECT @pet_id as pet_id", function (error, rows) {
           if (error) {
             console.error("Error retrieving pet_id:", error);
@@ -72,7 +176,7 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
 
           const petId = rows[0].pet_id;
 
-          console.log("PET_ID", petId); // Get the pet_id from the result
+          console.log("PET_ID", petId);
 
           if (!petId) {
             console.error("Error: Unable to retrieve pet_id");
@@ -81,7 +185,7 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
           }
 
           console.log("New pet added successfully with pet_id:", petId);
-          const imagePath = req.file?.path; // Assuming multer stores the path to the file in req.file.path
+          const imagePath = req.file?.path;
           con.query(
             "INSERT INTO PetImage (pet_id, image_name) VALUES (?, ?)",
             [petId, imagePath],

@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { RowDataPacket } from "mysql2";
 import { con } from "../model/db";
-import { genPassword } from "../app";
+
 import passport from "passport";
+import { genPassword } from "../middlewares/auth";
 
 export const renderSignup = async (req: Request, res: Response) => {
   res.render("users/signup");
@@ -35,7 +36,7 @@ export const signup = async (req: Request, res: Response) => {
   res.redirect("/login");
 };
 
-export const login = passport.authenticate("local", {
+export const login = passport.authenticate("user", {
   failureRedirect: "/login-failure",
   successRedirect: "/",
 });

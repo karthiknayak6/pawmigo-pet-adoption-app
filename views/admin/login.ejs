@@ -7,9 +7,9 @@
       class="border-2 rounded-md shadow-sm px-12 pt-12 bg-white flex flex-col"
     >
       <h1 class="mb-10 text-3xl font-semibold self-center text-primary">
-        Login
+        Admin Login
       </h1>
-      <form class="flex flex-col" method="post" action="/login">
+      <form class="flex flex-col" method="post" action="/admin/login">
         <label class="text-md" for="username"> Username: </label>
         <input
           class="mb-4 mt-2 border rounded-sm h-8 w-64"
@@ -28,13 +28,13 @@
         />
         <button
           type="submit"
-          class="mt-4 py-1 w-24 text-white bg-primary text-lg border border-primary rounded-md self-center hover:text-primary_light hover:bg-white hover:shadow-sm font-bold"
+          class="mt-4 py-1 w-24 text-white bg-primary text-lg border border-primary-300 rounded-md self-center hover:text-primary-300 hover:bg-white hover:shadow-sm font-bold"
         >
           Login
         </button>
         <p class="self-center mt-7 mb-7">
           Don't have an account?
-          <a href="/signup" class="cursor-pointer text-primary font-bold">
+          <a href="/admin/signup" class="cursor-pointer text-primary font-bold">
             Register
           </a>
         </p>

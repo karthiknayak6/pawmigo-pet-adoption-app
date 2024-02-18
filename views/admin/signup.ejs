@@ -1,0 +1,127 @@
+<% layout('layouts/boilerplate')%>
+<section
+  id="signup"
+  class="h-screen flex justify-center items-center bg-primary_light"
+>
+  <div
+    class="border-2 rounded-md shadow-sm bg-white px-14 py-12 flex flex-col items-center"
+  >
+    <h1 class="mb-10 text-3xl font-semibold text-primary">Admin Sign Up</h1>
+    <form class="flex flex-col" method="post" action="/admin/signup">
+      <label class="text-md" for="shelter_name">Shelter name: </label>
+      <input
+        class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+        type="text"
+        name="shelter_name"
+        id="shelter_name"
+        required
+      />
+      <div class="flex justify-center items-center space-x-2 w-full">
+        <div class="w-full">
+          <label class="text-md" for="username"> Username: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full"
+            type="text"
+            name="username"
+            id="username"
+            required
+          />
+        </div>
+        <div class="w-full">
+          <label class="text-md" for="password"> Password: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full"
+            type="password"
+            name="password"
+            id="password"
+            required
+          />
+        </div>
+      </div>
+      <label class="text-md" for="email"> Email: </label>
+      <input
+        class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+        type="email"
+        name="email"
+        id="email"
+        required
+      />
+      <div class="flex justify-center items-center space-x-2">
+        <div class="w-full">
+          <label class="text-md" for="street"> Street: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="text"
+            name="street"
+            id="street"
+            required
+          />
+        </div>
+        <div class="w-full">
+          <label class="text-md" for="city"> City: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="text"
+            name="city"
+            id="city"
+            required
+          />
+        </div>
+        <div class="w-full">
+          <label class="text-md" for="state"> State: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="text"
+            name="state"
+            id="state"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-center space-x-2">
+        <div class="w-full">
+          <label class="text-md" for="postal_code"> Postal Code: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="text"
+            name="postal_code"
+            id="postal_code"
+            required
+          />
+        </div>
+        <div class="w-full">
+          <label class="text-md" for="country"> Country: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="text"
+            name="country"
+            id="country"
+            required
+          />
+        </div>
+        <div class="w-full">
+          <label class="text-md" for="phone"> Phone: </label>
+          <input
+            class="mb-4 mt-2 border rounded-sm h-8 w-full px-1"
+            type="tel"
+            name="phone"
+            id="phone"
+            required
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="mt-4 py-1 w-24 text-white bg-primary text-lg font-semibold border border-primary rounded-md self-center"
+      >
+        Register
+      </button>
+      <p class="self-center mt-5">
+        Already have an account?
+        <a href="/admin/login" class="cursor-pointer text-primary font-bold">
+          Login
+        </a>
+      </p>
+    </form>
+  </div>
+</section>

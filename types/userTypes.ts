@@ -6,4 +6,5 @@ export interface User {
   first_name: string;
   last_name: string;
   salt: string;
+  shelter_id: string;
 }

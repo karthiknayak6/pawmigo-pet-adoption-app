@@ -598,6 +598,14 @@ video {
   top: 0px;
 }
 
+.top-full {
+  top: 100%;
+}
+
+.bottom-0 {
+  bottom: 0px;
+}
+
 .mx-40 {
   margin-left: 10rem;
   margin-right: 10rem;
@@ -712,6 +720,10 @@ video {
   margin-top: 1.75rem;
 }
 
+.mb-auto {
+  margin-bottom: auto;
+}
+
 .block {
   display: block;
 }
@@ -775,6 +787,26 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[80rem\] {
+  height: 80rem;
+}
+
+.h-\[8rem\] {
+  height: 8rem;
+}
+
+.h-\[200rem\] {
+  height: 200rem;
+}
+
+.h-\[140rem\] {
+  height: 140rem;
+}
+
+.h-\[110rem\] {
+  height: 110rem;
 }
 
 .w-24 {
@@ -866,6 +898,12 @@ video {
   row-gap: 1.75rem;
 }
 
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
@@ -888,12 +926,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
-}
-
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .self-center {
@@ -970,6 +1002,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .bg-\[url\(\'\/images\/banner\.png\'\)\] {
@@ -1075,6 +1112,31 @@ video {
 .py-9 {
   padding-top: 2.25rem;
   padding-bottom: 2.25rem;
+}
+
+.py-52 {
+  padding-top: 13rem;
+  padding-bottom: 13rem;
+}
+
+.py-40 {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .pl-3 {
@@ -1273,6 +1335,11 @@ video {
 .hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.hover\:text-primary_light:hover {
+  --tw-text-opacity: 1;
+  color: rgb(78 146 145 / var(--tw-text-opacity));
 }
 
 .hover\:shadow-lg:hover {
