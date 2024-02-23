@@ -280,8 +280,89 @@ export const renderRequests = (
   res: Response,
   next: NextFunction
 ) => {
-  res.render("admin/requests");
+  let shelter_id;
+  if (
+    req.user &&
+    "shelter_id" in req.user &&
+    typeof req.user.shelter_id === "number"
+  ) {
+    shelter_id = req.user.shelter_id;
+    console.log(shelter_id);
+
+    const sql = `
+      SELECT 
+        AdoptionRequest.*, 
+        User.username,User.first_name, User.last_name, User.email,
+        Pet.pet_name, Pet.age, Pet.description
+      FROM 
+        AdoptionRequest
+      INNER JOIN 
+        User ON AdoptionRequest.user_id = User.user_id
+      INNER JOIN 
+        Pet ON AdoptionRequest.pet_id = Pet.pet_id
+      WHERE 
+        Pet.shelter_id = ?
+    `;
+    const values = [shelter_id];
+
+    con.query(sql, values, (err, adoptionRequests) => {
+      if (err) {
+        console.error("Error fetching adoption requests:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+      console.log(adoptionRequests);
+      // Render the view with the fetched data
+      res.render("admin/requests", { requests: adoptionRequests });
+    });
+  } else {
+    res.send("No shelter is present");
+    return;
+  }
 };
+
+export const acceptAdopt = (req: Request, res: Response) => {
+  const pet_id = req.params.pet_id;
+  let shelter_id;
+  if (
+    req.user &&
+    "shelter_id" in req.user &&
+    typeof req.user.shelter_id === "number"
+  ) {
+    shelter_id = req.user.shelter_id;
+
+    // Update the status of the adoption request to 'accepted'
+    const sql = `
+      UPDATE AdoptionRequest 
+      SET status = 'accepted' 
+      WHERE pet_id = ? AND user_id IN (
+        SELECT user_id FROM Pet WHERE pet_id = ? AND shelter_id = ?
+      )
+    `;
+    const values = [pet_id, pet_id, shelter_id];
+
+    con.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error accepting adoption request:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      if (result.affectedRows === 0) {
+        // No adoption request found for the specified pet_id and shelter_id
+        res.status(404).send("Adoption request not found");
+        return;
+      }
+
+      // Adoption request status updated successfully
+      res.status(200).send("Adoption request accepted successfully");
+    });
+  } else {
+    res.send("No shelter is present");
+    return;
+  }
+};
+
 export const renderHistory = (
   req: Request,
   res: Response,

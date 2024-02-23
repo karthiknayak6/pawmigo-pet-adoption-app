@@ -23,7 +23,7 @@
           <a href="" class="font-bold text-primary"><%= pet.shelter_name %></a>
         </div>
         <button
-          onclick="window.location.href='/pets/12/adopt'"
+          onclick="window.location.href=`/pets/<%= pet.pet_id %>/adopt`"
           class="w-fit px-6 py-3 mt-10 bg-primary text-white hover:bg-primary_light rounded-md font-semibold"
         >
           Adopt me!

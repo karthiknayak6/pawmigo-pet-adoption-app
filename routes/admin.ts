@@ -1,6 +1,7 @@
 import express from "express";
 import { Request, Response, NextFunction } from "express";
 import {
+  acceptAdopt,
   addPet,
   adminLogin,
   adminSignup,
@@ -37,6 +38,7 @@ adminRouter
   .route("/add_pet")
   .get(isAdminLoggedIn, renderAddPet)
   .post(isAdminLoggedIn, upload.single("image"), addPet);
-adminRouter.route("/requests").get(renderRequests);
-adminRouter.route("/history").get(renderHistory);
-adminRouter.route("/:pet_id/delete").get(deletePet);
+adminRouter.route("/requests").get(isAdminLoggedIn, renderRequests);
+adminRouter.route("/:pet_id/accept").get(isAdminLoggedIn, acceptAdopt);
+adminRouter.route("/history").get(isAdminLoggedIn, renderHistory);
+adminRouter.route("/:pet_id/delete").get(isAdminLoggedIn, deletePet);

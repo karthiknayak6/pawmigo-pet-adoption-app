@@ -4,78 +4,94 @@
 >
   <p class="text-3xl text-primary font-bold ml-10 mt-5 mb-3">Adoption Form</p>
   <div class="flex px-10 text-gray-600 text-2xl items-center mb-2">
-    <img src="/images/dog1.jpg" class="rounded-lg bg-cover shadow-md mt-3" />
+    <div class="h-96 w-[30rem] mt-2">
+      <img
+        src="<%= pet.images %>"
+        class="object-cover h-full w-full rounded-md shadow-sm"
+      />
+    </div>
     <div class="ml-10 space-y-8 text-2xl">
-      <div><span class="font-bold">Name:</span> <span>Charlie</span></div>
       <div>
-        <span class="font-bold">Breed:</span> <span>Golden Retriever</span>
+        <span class="font-bold">Name: </span><%= pet.pet_name %><span></span>
       </div>
-      <div><span class="font-bold">Age:</span> <span>4 years</span></div>
       <div>
-        <a href="" class="font-bold text-primary">Puttur Paws</a>
+        <span class="font-bold">Breed:</span> <span><%= pet.breed %></span>
+      </div>
+      <div>
+        <span class="font-bold">Age:</span>
+        <span><%= pet.age %></span>
+      </div>
+      <div>
+        <a href="" class="font-bold text-primary"><%= pet.shelter_name %></a>
       </div>
     </div>
   </div>
+  <form method="post" action="" class="flex items-center flex-col mx-10">
+    <div class="flex flex-col mt-2 container">
+      <!-- <div class="flex justify-evenly space-x-9 items-center">
+        <input
+          required
+          type="text"
+          placeholder="Enter your first name"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+          name="first_name"
+        />
+        <input
+          required
+          type="text"
+          placeholder="Enter your last name"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+        />
+      </div> -->
+      <!-- <div class="flex justify-evenly space-x-5 items-center mt-4">
+        <input
+          required
+          type="email"
+          placeholder="Enter your email"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+        />
+        <input
+          required
+          type="text"
+          placeholder="Enter your city"
+          class="w-full h-12 text-xl bg-light px-3 rounded-md"
+          name="residence_type"
+        />
+      </div> -->
+      <input
+        required
+        type="text"
+        placeholder="What is your residence type?"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
+        name="residence_type"
+      />
+      <input
+        required
+        type="text"
+        placeholder="Whom are you getting this pet for?"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
+        name="pet_for"
+      />
+      <input
+        required
+        type="text"
+        placeholder="Reason for adopting pet?"
+        class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
+        name="reason_for_adoption"
+      />
+      <textarea
+        class="text-xl bg-light px-3 rounded-md mt-4 py-2"
+        rows="5"
+        cols="155"
+        placeholder="How to you plan to take care of the pet?"
+        name="care_plan"
+      ></textarea>
+    </div>
 
-  <div class="flex flex-col ml-10 mt-6 mr-10">
-    <div class="flex justify-evenly space-x-9 items-center">
-      <input
-        required
-        type="text"
-        placeholder="Enter your first name"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-      <input
-        required
-        type="text"
-        placeholder="Enter your last name"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-    </div>
-    <div class="flex justify-evenly space-x-9 items-center mt-4">
-      <input
-        required
-        type="email"
-        placeholder="Enter your email"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-      <input
-        required
-        type="text"
-        placeholder="Enter your city"
-        class="w-full h-12 text-xl bg-light px-3 rounded-md"
-      />
-    </div>
-    <input
-      required
-      type="text"
-      placeholder="What is your residence type?"
-      class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
-    />
-    <input
-      required
-      type="text"
-      placeholder="Whom are you getting this pet for?"
-      class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
-    />
-    <input
-      required
-      type="text"
-      placeholder="Reason for adopting pet?"
-      class="w-full h-12 text-xl bg-light px-3 rounded-md mt-4"
-    />
-    <textarea
-      class="text-xl bg-light px-3 rounded-md mt-4 py-2"
-      rows="5"
-      cols="155"
-      placeholder="How to you plan to take care of the pet?"
-    ></textarea>
-  </div>
-  <div class="self-center">
     <button
-      class="w-fit h-fit px-5 py-2 mx-40 mt-6 mb-6 bg-primary cursor-pointer hover:bg-primary_light rounded-xl font-semibold text-white text-lg"
+      class="mx-auto w-fit h-fit px-5 py-2 mt-6 mb-6 bg-primary cursor-pointer hover:bg-primary_light rounded-xl font-semibold text-white text-lg"
     >
       Submit
     </button>
-  </div>
+  </form>
 </div>
