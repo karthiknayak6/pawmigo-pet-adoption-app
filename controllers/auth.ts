@@ -37,7 +37,7 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const login = passport.authenticate("user", {
-  failureRedirect: "/login-failure",
+  failureRedirect: "/login",
   successRedirect: "/",
 });
 

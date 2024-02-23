@@ -2,22 +2,24 @@
 <div class="container mx-auto">
   <div
     id="dog"
-    class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
+    class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-sta"
   >
-    <% for (let i=0; i < 8; i++) {%>
+    <% for (let pet of pets) {%>
     <div
       class="h-fit flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
     >
       <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
         <img
-          src="/images/evil-doge.jpg"
+          src="<%=pet.image_name%>"
           class="object-cover h-full w-full rounded-t-md shadow-sm"
         />
       </div>
 
       <div id="info flex justify-center items-center">
-        <p class="text-lg font-bold text-center mt-2 text-primary">Doge</p>
-        <p class="text-center">Labrador retriever</p>
+        <p class="text-lg font-bold text-center mt-2 text-primary">
+          <%= pet.pet_name %>
+        </p>
+        <p class="text-center"><%= pet.pet_breed %></p>
       </div>
       <div class="w-full flex justify-center mt-2">
         <button
@@ -25,7 +27,10 @@
         >
           Edit
         </button>
-        <button class="bg-red-700 w-full text-white hover:bg-red-600">
+        <button
+          onclick="window.location.href='/admin/<%= pet.pet_id %>/delete'"
+          class="bg-red-700 w-full text-white hover:bg-red-600"
+        >
           Delete
         </button>
       </div>

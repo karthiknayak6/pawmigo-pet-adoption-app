@@ -6,7 +6,6 @@ import { FieldInfo } from "mysql";
 
 import passport from "passport";
 import { genPassword } from "../middlewares/auth";
-import { Shelter } from "../types/shelterTypes";
 
 export const renderAdminLogin = (
   req: Request,
@@ -29,7 +28,65 @@ export const renderAdminHome = (
   res: Response,
   next: NextFunction
 ) => {
-  res.render("admin/home");
+  console.log("CU: ", res.locals.currentUser);
+  const shelterId = res.locals.currentUser.shelter_id;
+
+  const query = `
+    SELECT 
+        Pet.pet_id, 
+        Pet.pet_name, 
+        Pet.age, 
+        Pet.description AS pet_description, 
+        Pet.special_care_required, 
+        PetImage.image_name, 
+        Breed.type AS pet_type, 
+        Breed.breed AS pet_breed, 
+        Breed.description AS breed_description, 
+        Breed.size, 
+        Breed.avg_life_span 
+    FROM 
+        Pet 
+    JOIN 
+        Breed ON Pet.pet_id = Breed.pet_id 
+    LEFT JOIN 
+        PetImage ON Pet.pet_id = PetImage.pet_id 
+    WHERE 
+        Pet.shelter_id = ?
+  `;
+
+  con.query(query, [shelterId], (err, results) => {
+    if (err) {
+      console.error("Error fetching pet details:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+    console.log("HOME RESULTS: ", results);
+    res.render("admin/home", { pets: results });
+  });
+};
+
+export const deletePet = (req: Request, res: Response) => {
+  const deletePetId = req.params.pet_id;
+  const shelterId = res.locals.currentUser.shelter_id;
+
+  const sql = "DELETE FROM Pet WHERE pet_id = ? AND shelter_id = ?";
+  const values = [deletePetId, shelterId];
+
+  con.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error deleting pet:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    if (result.affectedRows === 0) {
+      // No pet with the specified pet_id and shelter_id found
+      res.status(404).send("Pet not found");
+      return;
+    }
+
+    res.status(200).send("Pet deleted successfully");
+  });
 };
 
 export const renderAddPet = (
@@ -109,7 +166,6 @@ export const adminSignup = async (req: Request, res: Response) => {
     }
   );
 };
-
 export const adminLogin = passport.authenticate("shelter", {
   failureRedirect: "/login-failure",
   successRedirect: "/admin",

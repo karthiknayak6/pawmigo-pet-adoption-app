@@ -24,7 +24,7 @@ CREATE TABLE Shelter (
 );
 
 
-CREATE TABLE Pet (
+CREATE TABLE Pet ( 
     pet_id INT AUTO_INCREMENT PRIMARY KEY,
     pet_name VARCHAR(255) NOT NULL,
     age INT NOT NULL,
@@ -112,6 +112,7 @@ SELECT
     Pet.pet_name,
     Pet.age,
     Pet.special_care_required,
+    Pet.description,
     Breed.type AS pet_type,
     Breed.breed,
     Breed.description AS breed_description,

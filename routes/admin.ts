@@ -4,6 +4,7 @@ import {
   addPet,
   adminLogin,
   adminSignup,
+  deletePet,
   renderAddPet,
   renderAdminHome,
   renderAdminLogin,
@@ -38,3 +39,4 @@ adminRouter
   .post(isAdminLoggedIn, upload.single("image"), addPet);
 adminRouter.route("/requests").get(renderRequests);
 adminRouter.route("/history").get(renderHistory);
+adminRouter.route("/:pet_id/delete").get(deletePet);

@@ -30,7 +30,21 @@ export const renderSearchResults = (req: Request, res: Response) => {
 };
 
 export const renderShowPet = (req: Request, res: Response) => {
-  res.render("pets/show_pet");
+  console.log(req.params.id);
+  con.query(
+    "SELECT * FROM AvailablePets WHERE pet_id = ?",
+    [req.params.id],
+    (err, results: RowDataPacket[][]) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      console.log("Query result:", results);
+      res.render("pets/show_pet", { pet: results[0] });
+    }
+  );
 };
 
 export const renderAdoptPet = (req: Request, res: Response) => {
