@@ -1,6 +1,6 @@
 <% layout('layouts/admin_boilerplate')%>
 <div>
-  <% for (request of requests) { %>
+  <% for (request of requests) { if(request.status != "rejected") {%>
   <div
     class="mb-10 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
   >
@@ -14,11 +14,19 @@
       >
         Approve
       </button>
-      <button class="py-2 px-3 bg-red-700 text-white rounded-md">Reject</button>
+      <button
+        onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/reject'"
+        class="py-2 px-3 bg-red-700 text-white rounded-md"
+      >
+        Reject
+      </button>
       <% if(request.status === "accepted") {%>
-      <button class="py-2 px-3 bg-blue-700 text-white rounded-md">
+      <button
+        onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/adopt'"
+        class="py-2 px-3 bg-blue-700 text-white rounded-md"
+      >
         Mark as Adopted</button
-      ><% } %>
+      ><% }} %>
     </div>
   </div>
   <% } %>

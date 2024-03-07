@@ -6,6 +6,7 @@ import {
   adminLogin,
   adminSignup,
   deletePet,
+  rejectRequest,
   renderAddPet,
   renderAdminHome,
   renderAdminLogin,
@@ -17,6 +18,7 @@ import {
 import multer from "multer";
 import path from "path";
 import { isAdminLoggedIn, isLoggedIn } from "../middlewares/auth";
+import { adoptPet } from "../controllers/admin";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -42,3 +44,7 @@ adminRouter.route("/requests").get(isAdminLoggedIn, renderRequests);
 adminRouter.route("/:pet_id/accept").get(isAdminLoggedIn, acceptAdopt);
 adminRouter.route("/history").get(isAdminLoggedIn, renderHistory);
 adminRouter.route("/:pet_id/delete").get(isAdminLoggedIn, deletePet);
+adminRouter.route("/:pet_id/:user_id/adopt").get(isAdminLoggedIn, adoptPet);
+adminRouter
+  .route("/:pet_id/:user_id/reject")
+  .get(isAdminLoggedIn, rejectRequest);

@@ -1,26 +1,48 @@
-import { Request, Response as ExpressResponse } from "express";
+import { Request, Response } from "express";
 import { RowDataPacket } from "mysql2";
 import { con } from "../model/db";
+import { FieldInfo, MysqlError } from "mysql";
+import { Connection } from "mongoose";
 
-interface Response extends ExpressResponse {
-  render: (view: string, locals?: Record<string, any>) => void;
-}
+export const renderHome = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    // Fetch available pets
+    con.query(
+      "SELECT * FROM AvailablePets",
+      async (err: MysqlError, petResults: RowDataPacket[][]) => {
+        if (err) {
+          console.error("Error executing pets query:", err);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
 
-export const renderHome = async (req: Request, res: Response) => {
-  con.query(
-    "SELECT * FROM AvailablePets",
-    (err, results: RowDataPacket[][]) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        res.status(500).send("Internal Server Error");
-        return;
+        console.log("Pets query result:", petResults);
+
+        // Fetch shelters
+        con.query(
+          "SELECT * FROM Shelter",
+          async (err: MysqlError, shelterResults: RowDataPacket[][]) => {
+            if (err) {
+              console.error("Error executing shelters query:", err);
+              res.status(500).send("Internal Server Error");
+              return;
+            }
+
+            console.log("Shelters query result:", shelterResults);
+
+            // Render home page with pets and shelters data
+            res.render("home", { pets: petResults, shelters: shelterResults });
+          }
+        );
       }
-
-      console.log("Query result:", results);
-      if ("images" in results[0]) console.log("Images: ", results[0].images);
-      res.render("home", { pets: results });
-    }
-  );
+    );
+  } catch (error) {
+    console.error("Error in renderHome:", error);
+    res.status(500).send("Internal Server Error");
+  }
 };
 
 export const renderSearchResults = (req: Request, res: Response) => {
@@ -68,9 +90,7 @@ export const renderAdoptPet = (req: Request, res: Response) => {
 export const adoptPet = async (req: Request, res: Response) => {
   const { residence_type, pet_for, reason_for_adoption, care_plan } = req.body;
   const pet_id = req.params.id;
-  let user_id;
-
-  if (req.user && "user_id" in req.user) user_id = req.user?.user_id;
+  let user_id = req.user.user_id;
 
   try {
     const result = await con.query(
@@ -88,5 +108,18 @@ export const adoptPet = async (req: Request, res: Response) => {
     res
       .status(500)
       .json({ success: false, message: "Error submitting adoption request" });
+  }
+};
+
+export const fetchShelters = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const shelters = await con.query("SELECT * FROM Shelter");
+    res.status(200).json(shelters);
+  } catch (error) {
+    console.error("Error while fetching shelters:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

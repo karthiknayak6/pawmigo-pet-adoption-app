@@ -150,7 +150,7 @@ CREATE PROCEDURE AddNewPet(
     IN p_age INT, 
     IN p_special_care_required TEXT, 
     IN p_shelter_id INT,
-    IN p_type ENUM('cat', 'dog'),
+    IN p_type ENUM('cat', 'dog', 'other'),
     IN p_breed VARCHAR(255),
     IN p_description TEXT,
     IN breed_description TEXT,

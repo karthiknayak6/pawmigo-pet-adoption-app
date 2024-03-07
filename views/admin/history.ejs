@@ -1,12 +1,12 @@
 <% layout('layouts/admin_boilerplate')%>
 <div>
-  <% for (i=0; i< 5; i++) { %>
+  <% for (history of adoptionHistory) { %>
   <div
     class="mb-5 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
   >
-    <p>Karthik</p>
-    <p>Beluga</p>
-    <p>27/09/1969</p>
+    <p><%= history.username %></p>
+    <p><%= history.pet_name %></p>
+    <p><%= history.adoption_date %></p>
     <div>
       <p class="text-green-800">Adopted</p>
       <!-- <button class="py-2 px-3 bg-green-700 text-white rounded-md">

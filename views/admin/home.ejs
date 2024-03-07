@@ -4,7 +4,7 @@
     id="dog"
     class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-sta"
   >
-    <% for (let pet of pets) {%>
+    <% for (let pet of pets) if(pet.is_available){ {%>
     <div
       class="h-fit flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
     >
@@ -35,6 +35,6 @@
         </button>
       </div>
     </div>
-    <% } %>
+    <% }} %>
   </div>
 </div>

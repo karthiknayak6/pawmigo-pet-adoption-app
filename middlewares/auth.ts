@@ -9,7 +9,7 @@ import crypto from "crypto";
 import { Shelter } from "../types/shelterTypes";
 
 export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
-  if (req.isAuthenticated() && "user_id" in req.user && req.user.user_id) {
+  if (req.isAuthenticated() && req.user.user_id) {
     next();
   } else {
     res.redirect("/login");
@@ -41,7 +41,7 @@ const customFields = {
 const verifyCallback = (
   username: string,
   password: string,
-  done: (error: any, user?: User | false) => void
+  done: (error: any, user?: any | false) => void
 ) => {
   con.query(
     "SELECT * FROM User WHERE username = ? ",
