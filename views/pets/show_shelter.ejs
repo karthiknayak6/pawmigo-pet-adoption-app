@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate')%>
+<div class="mt-24 container mx-auto">
+  <div class="mb-5 shadow-sm py-6 bg-white rounded-md mt-5 text-lg">
+    <div class="flex px-10 text-gray-600 text-2xl items-center">
+      <div class="h-96 w-[30rem] mt-2">
+        <img
+          src="/images/shelter_svg.jpg"
+          class="object-cover h-full w-full rounded-md shadow-sm"
+        />
+      </div>
+      <div class="ml-10 space-y-8 text-2xl">
+        <div>
+          <span class="font-bold">Name: </span
+          ><span><%= shelter.shelter_name %></span>
+        </div>
+        <div>
+          <span class="font-bold">City:</span> <span><%= shelter.city %></span>
+        </div>
+        <div>
+          <span class="font-bold">State:</span>
+          <span><%= shelter.state %></span>
+        </div>
+        <div>
+          <span class="font-bold">Country:</span>
+          <span><%= shelter.country %></span>
+        </div>
+        <div>
+          <span class="font-bold">Phone:</span>
+          <span><%= shelter.phone %></span>
+        </div>
+        <div>
+          <span class="font-bold">Email:</span>
+          <span><%= shelter.email %></span>
+        </div>
+        <!-- Add any other shelter details you want to display -->
+      </div>
+    </div>
+  </div>
+</div>

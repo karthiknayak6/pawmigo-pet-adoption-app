@@ -32,8 +32,10 @@ CREATE TABLE Pet (
     special_care_required TEXT DEFAULT NULL,
     shelter_id INT NOT NULL,
     is_available BOOLEAN DEFAULT TRUE NOT NULL,
+    gender ENUM('male', 'female'),
     FOREIGN KEY (shelter_id) REFERENCES Shelter(shelter_id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE Breed (
     pet_id INT NOT NULL PRIMARY KEY,
@@ -119,7 +121,10 @@ SELECT
     Breed.size,
     Breed.avg_life_span,
     GROUP_CONCAT(PetImage.image_name) AS images,
-    Shelter.shelter_name
+    Shelter.shelter_name,
+    Shelter.city,
+    Shelter.shelter_id,
+    Pet.gender
 FROM Pet
 JOIN Breed ON Pet.pet_id = Breed.pet_id
 JOIN PetImage ON Pet.pet_id = PetImage.pet_id
@@ -145,6 +150,7 @@ JOIN Breed ON Pet.pet_id = Breed.pet_id;
 
 /* Add New Pet Procedure: This procedure will insert a new pet into the Pet table. */
 DELIMITER //
+
 CREATE PROCEDURE AddNewPet(
     IN p_pet_name VARCHAR(255), 
     IN p_age INT, 
@@ -156,17 +162,21 @@ CREATE PROCEDURE AddNewPet(
     IN breed_description TEXT,
     IN p_size VARCHAR(255),
     IN p_avg_life_span VARCHAR(255),
+    IN p_gender ENUM('male', 'female'),
     OUT p_pet_id INT
 )
 BEGIN
-    INSERT INTO Pet (pet_name, age, description, special_care_required, shelter_id)
-    VALUES (p_pet_name, p_age,p_description, p_special_care_required, p_shelter_id);
+    INSERT INTO Pet (pet_name, age, description, special_care_required, shelter_id, gender)
+    VALUES (p_pet_name, p_age, p_description, p_special_care_required, p_shelter_id, p_gender);
     
     SET p_pet_id = LAST_INSERT_ID();
     
     INSERT INTO Breed (pet_id, type, breed, description, size, avg_life_span)
     VALUES (p_pet_id, p_type, p_breed, breed_description, p_size, p_avg_life_span);
 END //
+
+DELIMITER ;
+
 
 /* Adopt Pet Procedure: This procedure will insert a new record into the AdoptionHistory table */
 CREATE PROCEDURE AdoptPet(IN p_pet_id INT, IN p_user_id INT)

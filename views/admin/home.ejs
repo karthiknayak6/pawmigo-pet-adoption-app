@@ -10,26 +10,30 @@
     >
       <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
         <img
+          onclick="window.location.href='/admin/pets/<%=pet.pet_id%>'"
           src="<%=pet.image_name%>"
           class="object-cover h-full w-full rounded-t-md shadow-sm"
         />
       </div>
 
       <div id="info flex justify-center items-center">
-        <p class="text-lg font-bold text-center mt-2 text-primary">
+        <p
+          onclick="window.location.href='/admin/pets/<%=pet.pet_id%>'"
+          class="text-lg font-bold text-center mt-2 text-primary"
+        >
           <%= pet.pet_name %>
         </p>
         <p class="text-center"><%= pet.pet_breed %></p>
       </div>
       <div class="w-full flex justify-center mt-2">
-        <button
+        <!-- <button
           class="bg-primary_light w-full text-white py-2 hover:bg-[#50a79a]"
         >
           Edit
-        </button>
+        </button> -->
         <button
           onclick="window.location.href='/admin/<%= pet.pet_id %>/delete'"
-          class="bg-red-700 w-full text-white hover:bg-red-600"
+          class="py-2 bg-red-700 w-full text-white hover:bg-red-600"
         >
           Delete
         </button>

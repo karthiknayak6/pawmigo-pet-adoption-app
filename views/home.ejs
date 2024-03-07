@@ -27,12 +27,13 @@
           <option value="pet">Pet</option>
           <option value="cat">Cat</option>
           <option value="dog">Dog</option>
+          <option value="other">Others</option>
         </select>
-        <select
+        <!-- <select
           class="breedSelect bg-white w-32 text-xl rounded-lg text-center"
         >
           <option value="breed">Breed</option>
-        </select>
+        </select> -->
         <a
           onclick="handleClick()"
           class="w-fit px-6 py-3 mx-40 bg-primary text-white cursor-pointer hover:bg-primary_light rounded-md font-semibold text-lg"
@@ -172,7 +173,7 @@
           Dogs
         </div>
         <a
-          href="/search/dog"
+          href="/search?pet=dog"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -198,7 +199,7 @@
               <%= pet.pet_name %>
             </p>
             <p class="text-center"><%= pet.breed %></p>
-            <p class="text-center italic">Bangalore</p>
+            <p class="text-center italic"><%= pet.city %></p>
           </div>
         </div>
         <% } %> <% } %>
@@ -210,7 +211,7 @@
           Cats
         </div>
         <a
-          href="/search/cat"
+          href="/search?pet=cat"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -236,7 +237,7 @@
               <%= pet.pet_name %>
             </p>
             <p class="text-center"><%= pet.breed %></p>
-            <p class="text-center italic">Bangalore</p>
+            <p class="text-center italic"><%= pet.city %></p>
           </div>
         </div>
         <% } %> <% } %>
@@ -248,7 +249,7 @@
           Others
         </div>
         <a
-          href="/search/other"
+          href="/search?pet=other"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
         >
@@ -274,7 +275,7 @@
               <%= pet.pet_name %>
             </p>
             <p class="text-center"><%= pet.breed %></p>
-            <p class="text-center italic">Bangalore</p>
+            <p class="text-center italic"><%= pet.city %></p>
           </div>
         </div>
         <% } %> <% } %>
@@ -285,11 +286,11 @@
         <div class="text-3xl text-center text-primary font-bold ml-16">
           Shelters
         </div>
-        <a
-          href="/search/shelter"
+        <!-- <a
+          href="/search?pet=other"
           class="self-center mr-10 bg-primary_light px-4 py-2 text-white rounded-full font-bold"
           >View more</a
-        >
+        > -->
       </div>
       <div
         id="shelter"

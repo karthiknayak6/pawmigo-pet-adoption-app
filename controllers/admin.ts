@@ -200,10 +200,11 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
       size,
       avg_life_span,
       breed_desc,
+      gender,
     }: Pet = req.body;
     let shelter_id = req.user.shelter_id;
     con.query(
-      "CALL AddNewPet(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @pet_id)",
+      "CALL AddNewPet(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, @pet_id)",
       [
         pet_name,
         age,
@@ -215,6 +216,7 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
         breed_desc,
         size,
         avg_life_span,
+        gender,
       ],
       function (
         error: QueryError | null,
@@ -513,4 +515,22 @@ export const renderHistory = (
     // Render the view and pass adoption history data
     res.render("admin/history", { adoptionHistory: rows });
   });
+};
+
+export const renderShowPet = (req: Request, res: Response) => {
+  console.log(req.params.id);
+  con.query(
+    "SELECT * FROM AvailablePets WHERE pet_id = ?",
+    [req.params.id],
+    (err, results: RowDataPacket[][]) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      console.log("Query result:", results);
+      res.render("pets/show_pet", { pet: results[0] });
+    }
+  );
 };

@@ -13,6 +13,7 @@ import {
   renderAdminSignup,
   renderHistory,
   renderRequests,
+  renderShowPet,
 } from "../controllers/admin";
 
 import multer from "multer";
@@ -48,3 +49,5 @@ adminRouter.route("/:pet_id/:user_id/adopt").get(isAdminLoggedIn, adoptPet);
 adminRouter
   .route("/:pet_id/:user_id/reject")
   .get(isAdminLoggedIn, rejectRequest);
+
+adminRouter.route("/pets/:id").get(isAdminLoggedIn, renderShowPet);

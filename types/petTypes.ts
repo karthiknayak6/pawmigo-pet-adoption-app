@@ -8,4 +8,5 @@ export interface Pet {
   size: string;
   avg_life_span: number;
   breed_desc: string;
+  gender: string;
 }

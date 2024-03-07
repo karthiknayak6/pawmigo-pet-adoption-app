@@ -12,15 +12,18 @@
     <p class="text-3xl text-primary font-bold ml-10 mt-5">Add a Pet</p>
     <div class="flex flex-col ml-10 mt-6 mr-10">
       <div class="mb-6">
-        <p class="mb-2">Add Image</p>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          class="w-full text-gray-700 border rounded-lg focus:outline-none cursor-pointer"
-          style="appearance: auto"
-        />
+        <p class="mb-2 text-xl font-semibold text-gray-600">Add Image</p>
+        <div class="mt-1 relative rounded-md shadow-sm">
+          <input
+            type="file"
+            id="image"
+            name="image"
+            class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 pr-12 text-lg border-gray-300 rounded-md"
+            style="appearance: auto"
+          />
+        </div>
       </div>
+
       <div class="flex space-x-2 justify-evenly items-center">
         <input
           type="text"
@@ -48,6 +51,15 @@
           name="age"
           required
         />
+        <select
+          name="gender"
+          class="w-full h-12 bg-light px-3 rounded-md text-xl"
+          required
+        >
+          <option value="" disabled selected>Select Type</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
       </div>
 
       <div>

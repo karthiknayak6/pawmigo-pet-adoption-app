@@ -6,26 +6,29 @@
     <p class="text-xl text-primary">Search Results</p>
   </div>
   <div
-    id="other"
-    class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
+    id=""
+    class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-start"
   >
-    <% for (let i=0; i < 15 ; i++) {%>
+    <% for (let pet of searchResults) {%> <% if (pet.is_available) {%>
     <div
-      class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light"
+      onclick="window.location.href = `pets/<%=pet.pet_id%>`"
+      class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light max-w-[22rem]"
     >
       <div id="image" class="h-56 w-full min-w-72 bg-white rounded-t-md">
         <img
-          src="/images/dog1.jpg"
+          src="<%= pet.images %>"
           class="object-cover h-full w-full rounded-t-md shadow-sm"
         />
       </div>
 
       <div id="info flex justify-center items-center">
-        <p class="text-lg font-bold text-center mt-2 text-primary">Charlie</p>
-        <p class="text-center">Labrador retriever</p>
+        <p class="text-lg font-bold text-center mt-2 text-primary">
+          <%= pet.pet_name %>
+        </p>
+        <p class="text-center"><%= pet.breed %></p>
         <p class="text-center italic">Bangalore</p>
       </div>
     </div>
-    <% } %>
+    <% } %> <% } %>
   </div>
 </div>

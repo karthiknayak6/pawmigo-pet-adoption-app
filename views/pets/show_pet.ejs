@@ -20,7 +20,15 @@
           <span><%= pet.age %></span>
         </div>
         <div>
-          <a href="" class="font-bold text-primary"><%= pet.shelter_name %></a>
+          <span class="font-bold">Gender:</span>
+          <% if (pet.gender){ %><span><%= pet.gender %></span> <% } %>
+        </div>
+        <div>
+          <a
+            href="/shelters/<%= pet.shelter_id %>"
+            class="font-bold text-primary"
+            ><%= pet.shelter_name %></a
+          >
         </div>
         <button
           onclick="window.location.href=`/pets/<%= pet.pet_id %>/adopt`"
