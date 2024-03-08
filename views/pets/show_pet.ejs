@@ -23,6 +23,7 @@
           <span class="font-bold">Gender:</span>
           <% if (pet.gender){ %><span><%= pet.gender %></span> <% } %>
         </div>
+        <% if (!currentUser.shelter_id) { %>
         <div>
           <a
             href="/shelters/<%= pet.shelter_id %>"
@@ -34,8 +35,8 @@
           onclick="window.location.href=`/pets/<%= pet.pet_id %>/adopt`"
           class="w-fit px-6 py-3 mt-10 bg-primary text-white hover:bg-primary_light rounded-md font-semibold"
         >
-          Adopt me!
-        </button>
+          Adopt me!</button
+        ><% } %>
       </div>
       <!-- <div>Breed</div> -->
     </div>
