@@ -32,23 +32,24 @@ export const signup = async (req: Request, res: Response) => {
       }
     }
   );
-
+  req.flash("success", "Successfully registered!!");
   res.redirect("/login");
 };
 
 export const login = passport.authenticate("user", {
   failureRedirect: "/login",
   successRedirect: "/",
+  failureFlash: true,
 });
-
 export const logout = (req: Request, res: Response, next: NextFunction) => {
   req.logout({}, (err) => {
     if (err) {
-      // Handle error
       console.error(err);
       next(err);
     } else {
-      res.redirect("/");
+      res.status(200);
+      req.flash("success", "Successfully Logged out!!");
+      res.redirect("/login");
     }
   });
 };

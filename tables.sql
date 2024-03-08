@@ -99,14 +99,7 @@ BEGIN
 END //
 DELIMITER ;
 
-/* VIEWS */
 
--- View of all available pets
-/* CREATE VIEW AvailablePets AS
-SELECT Pet.pet_id, Pet.pet_name, Pet.age, Pet.special_care_required, Shelter.shelter_name
-FROM Pet
-JOIN Shelter ON Pet.shelter_id = Shelter.shelter_id
-WHERE Pet.is_available = TRUE; */
 
 CREATE VIEW AvailablePets AS
 SELECT 
@@ -175,7 +168,7 @@ BEGIN
     VALUES (p_pet_id, p_type, p_breed, breed_description, p_size, p_avg_life_span);
 END //
 
-DELIMITER ;
+
 
 
 /* Adopt Pet Procedure: This procedure will insert a new record into the AdoptionHistory table */

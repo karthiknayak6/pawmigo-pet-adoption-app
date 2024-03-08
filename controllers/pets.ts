@@ -27,7 +27,9 @@ export const renderHome = async (
           async (err: MysqlError, shelterResults: RowDataPacket[][]) => {
             if (err) {
               console.error("Error executing shelters query:", err);
-              res.status(500).send("Internal Server Error");
+              res.status(500);
+              req.flash("error", "Internal server error");
+              res.redirect("/");
               return;
             }
 
@@ -82,7 +84,9 @@ export const renderSearchResults = (req: Request, res: Response) => {
   con.query(sql, values, (err, results) => {
     if (err) {
       console.error("Error fetching search results:", err);
-      res.status(500).send("Internal Server Error");
+      res.status(500);
+      req.flash("error", "Internal server error");
+      res.redirect("/");
       return;
     }
 
@@ -121,12 +125,15 @@ export const renderShelter = (req: Request, res: Response) => {
   con.query(sql, [shelterId], (err, results) => {
     if (err) {
       console.error("Error fetching shelter details:", err);
-      res.status(500).send("Internal Server Error");
+      res.status(500);
+      req.flash("error", "Internal server error");
+      res.redirect("/pets");
       return;
     }
     if (results.length === 0) {
-      // Shelter not found
-      res.status(404).send("Shelter not found");
+      res.status(404);
+      req.flash("error", "Shelter not found!!");
+      res.redirect("/");
       return;
     }
     // Render the shelter details page and pass the shelter object to the template
@@ -142,7 +149,9 @@ export const renderShowPet = (req: Request, res: Response) => {
     (err, results: RowDataPacket[][]) => {
       if (err) {
         console.error("Error executing query:", err);
-        res.status(500).send("Internal Server Error");
+        res.status(500);
+        req.flash("error", "Internal server error");
+        res.redirect("/");
         return;
       }
 
@@ -160,7 +169,9 @@ export const renderAdoptPet = (req: Request, res: Response) => {
     (err, results: RowDataPacket[][]) => {
       if (err) {
         console.error("Error executing query:", err);
-        res.status(500).send("Internal Server Error");
+        res.status(500);
+        req.flash("error", "Internal server error!!");
+        res.redirect("/");
         return;
       }
 
@@ -170,28 +181,67 @@ export const renderAdoptPet = (req: Request, res: Response) => {
   );
 };
 
-export const adoptPet = async (req: Request, res: Response) => {
+export const adoptPet = (req: Request, res: Response) => {
   const { residence_type, pet_for, reason_for_adoption, care_plan } = req.body;
   const pet_id = req.params.id;
-  let user_id = req.user.user_id;
+  const user_id = req.user.user_id;
 
-  try {
-    const result = await con.query(
-      `INSERT INTO AdoptionRequest (pet_id, user_id, residence_type, pet_for, reason_for_adoption, care_plan)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [pet_id, user_id, residence_type, pet_for, reason_for_adoption, care_plan]
-    );
+  // Check if the user has already adopted the pet
+  con.query(
+    `SELECT * FROM AdoptionRequest WHERE pet_id = ? AND user_id = ?`,
+    [pet_id, user_id],
+    (existingRequestErr, existingRequestResult) => {
+      if (existingRequestErr) {
+        console.error(
+          "Error while checking existing request:",
+          existingRequestErr
+        );
+        res.status(500);
+        req.flash(
+          "error",
+          "Error checking existing request. Please try again."
+        );
+        return res.redirect(`/pets/${pet_id}`);
+      }
 
-    res.status(200).json({
-      success: true,
-      message: "Adoption request submitted successfully",
-    });
-  } catch (error) {
-    console.error("Error while submitting adoption request:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Error submitting adoption request" });
-  }
+      console.log("exis", existingRequestResult);
+      if (existingRequestResult.length > 0) {
+        // User has already adopted the pet
+        res.status(400); // or any other appropriate status code
+        req.flash("error", "You have already sent a request for this pet.");
+        return res.redirect(`/pets/${pet_id}`);
+      }
+
+      // If the user hasn't adopted the pet, insert the new adoption request
+      con.query(
+        `INSERT INTO AdoptionRequest (pet_id, user_id, residence_type, pet_for, reason_for_adoption, care_plan)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          pet_id,
+          user_id,
+          residence_type,
+          pet_for,
+          reason_for_adoption,
+          care_plan,
+        ],
+        (insertErr, insertResult) => {
+          if (insertErr) {
+            console.error(
+              "Error while submitting adoption request:",
+              insertErr
+            );
+            res.status(500);
+            req.flash("error", "Error sending the request. Please try again.");
+            return res.redirect(`/pets/${pet_id}`);
+          }
+
+          res.status(200);
+          req.flash("success", "Successfully sent the request!");
+          res.redirect(`/pets/${pet_id}`);
+        }
+      );
+    }
+  );
 };
 
 export const fetchShelters = async (
@@ -203,6 +253,7 @@ export const fetchShelters = async (
     res.status(200).json(shelters);
   } catch (error) {
     console.error("Error while fetching shelters:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500);
+    req.flash("error", "Internal server error");
   }
 };

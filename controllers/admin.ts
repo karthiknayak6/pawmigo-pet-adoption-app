@@ -90,7 +90,9 @@ export const deletePet = (req: Request, res: Response) => {
       return;
     }
 
-    res.status(200).send("Pet deleted successfully");
+    res.status(200);
+    req.flash("success", "Pet deleted successfully");
+    res.redirect("/admin");
   });
 };
 
@@ -162,12 +164,16 @@ export const adminSignup = async (req: Request, res: Response) => {
     ) => {
       if (error) {
         console.error("Error inserting shelter:", error);
-        res.status(500).send("Error inserting shelter");
+        res.status(500);
+        req.flash("error", "Error adding shelter");
+        res.redirect("/admin/signup");
         return;
       }
 
       console.log("Shelter inserted successfully:", results);
-      res.status(200).send("Shelter inserted successfully");
+      res.status(200);
+      req.flash("error", "Shelter registered successfully!");
+      res.redirect("/admin/");
     }
   );
 };
@@ -225,14 +231,18 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
       ) {
         if (error) {
           console.error("Error adding new pet:", error);
-          res.status(500).send("Error adding new pet");
+          res.status(500);
+          req.flash("error", "Error adding new pet");
+          res.redirect("/admin/add_pet");
           return;
         }
 
         con.query("SELECT @pet_id as pet_id", function (error, rows) {
           if (error) {
             console.error("Error retrieving pet_id:", error);
-            res.status(500).send("Error adding new pet");
+            res.status(500);
+            req.flash("error", "Error adding new pet");
+            res.redirect("/admin/add_pet");
             return;
           }
 
@@ -242,7 +252,9 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
 
           if (!petId) {
             console.error("Error: Unable to retrieve pet_id");
-            res.status(500).send("Error adding new pet");
+            res.status(500);
+            req.flash("error", "Error adding new pet");
+            res.redirect("/admin/add_pet");
             return;
           }
 
@@ -254,11 +266,14 @@ export const addPet = async (req: Request, res: Response): Promise<void> => {
             function (error) {
               if (error) {
                 console.error("Error adding pet image:", error);
-                res.status(500).send("Error adding new pet");
+                res.status(500);
+                req.flash("error", "Error adding new pet");
+                res.redirect("/admin/add_pet");
                 return;
               }
               console.log("Pet image added successfully");
-              res.send("Success");
+              req.flash("success", "Pet added successfully");
+              res.redirect("/admin/add_pet");
             }
           );
         });
@@ -328,7 +343,9 @@ export const acceptAdopt = (req: Request, res: Response) => {
 
     if (result.affectedRows === 0) {
       // No adoption request found for the specified pet_id and shelter_id
-      res.status(404).send("Adoption request not found");
+      res.status(404);
+      req.flash("error", "Adoption request not found");
+      res.redirect("/admin/requests");
       return;
     }
 
@@ -390,7 +407,13 @@ export const acceptAdopt = (req: Request, res: Response) => {
       }
 
       // Adoption request status updated and email sent successfully
-      res.status(200).send("Adoption request accepted successfully");
+      res.status(200);
+      req.flash(
+        "success",
+        "Adoption request status updated and email sent successfully"
+      );
+
+      res.redirect("/admin/requests");
     });
   });
 };
@@ -438,22 +461,25 @@ export const adoptPet = (req: Request, res: Response) => {
       }
 
       // Delete the adoption request tuple
-      const requestDeleteSQL = `
-          DELETE FROM AdoptionRequest 
-          WHERE pet_id = ? AND user_id = ?
-      `;
-      const requestDeleteValues = [pet_id, user_id];
+      // const requestDeleteSQL = `
+      //     DELETE FROM AdoptionRequest
+      //     WHERE pet_id = ? AND user_id = ?
+      // `;
+      // const requestDeleteValues = [pet_id, user_id];
 
-      con.query(requestDeleteSQL, requestDeleteValues, (err, result) => {
-        if (err) {
-          console.error("Error deleting adoption request:", err);
-          res.status(500).send("Internal Server Error");
-          return;
-        }
+      // con.query(requestDeleteSQL, requestDeleteValues, (err, result) => {
+      //   if (err) {
+      //     console.error("Error deleting adoption request:", err);
+      //     res.status(500).send("Internal Server Error");
+      //     return;
+      //   }
 
-        // Adoption recorded and request deleted successfully
-        res.status(200).send("Pet adopted successfully");
-      });
+      //   // Adoption recorded and request deleted successfully
+
+      // });res.status(200).send("Pet adopted successfully");
+      res.status(200);
+      req.flash("success", "Ped adopted successfully");
+      res.redirect("/admin/requests");
     });
   });
 };
@@ -473,7 +499,9 @@ export const rejectRequest = (req: Request, res: Response) => {
   con.query(rejectionUpdateSQL, rejectionValues, (err, result) => {
     if (err) {
       console.error("Error rejecting adoption request:", err);
-      res.status(500).send("Internal Server Error");
+      res.status(500);
+      req.flash("error", "Internal server error");
+      res.redirect("/admin/requests");
       return;
     }
 
@@ -483,8 +511,25 @@ export const rejectRequest = (req: Request, res: Response) => {
       return;
     }
 
-    // Adoption request rejected successfully
-    res.status(200).send("Adoption request rejected successfully");
+    // Add the pet to the adoption history
+    const adoptionHistorySQL = `
+      INSERT INTO AdoptionHistory (pet_id, user_id, adoption_date)
+      VALUES (?, ?, NOW())
+    `;
+    const adoptionHistoryValues = [pet_id, user_id];
+
+    con.query(adoptionHistorySQL, adoptionHistoryValues, (err, result) => {
+      if (err) {
+        console.error("Error adding pet to adoption history:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      // Adoption request rejected and pet added to adoption history successfully
+      res.status(200);
+      req.flash("success", "Adoption request rejected successfully!!");
+      res.redirect("/admin/requests");
+    });
   });
 };
 
@@ -495,12 +540,13 @@ export const renderHistory = (
 ) => {
   const shelter_id = req.user.shelter_id;
 
-  // Fetch adoption history from the database for the specific shelter
+  // Fetch adoption history and status from the database for the specific shelter
   const sql = `
-    SELECT Pet.pet_name, User.username, AdoptionHistory.adoption_date
+    SELECT Pet.pet_name, Pet.pet_id, User.user_id,  User.username, AdoptionHistory.adoption_date, AdoptionRequest.status
     FROM AdoptionHistory
     INNER JOIN Pet ON AdoptionHistory.pet_id = Pet.pet_id
     INNER JOIN User ON AdoptionHistory.user_id = User.user_id
+    LEFT JOIN AdoptionRequest ON Pet.pet_id = AdoptionRequest.pet_id AND AdoptionHistory.user_id = AdoptionRequest.user_id
     WHERE Pet.shelter_id = ?
     ORDER BY AdoptionHistory.adoption_date DESC
   `;
@@ -533,4 +579,36 @@ export const renderShowPet = (req: Request, res: Response) => {
       res.render("pets/show_pet", { pet: results[0] });
     }
   );
+};
+export const viewRequest = (req: Request, res: Response) => {
+  const pet_id = req.params.pet_id;
+  const user_id = req.params.user_id;
+
+  // Query to fetch adoption request along with pet details, pet image, and user details
+  const sql = `
+    SELECT ar.*, p.*, pi.image_name, u.*
+    FROM AdoptionRequest ar
+    JOIN Pet p ON ar.pet_id = p.pet_id
+    JOIN PetImage pi ON p.pet_id = pi.pet_id
+    JOIN User u ON ar.user_id = u.user_id
+    WHERE ar.pet_id = ? AND ar.user_id = ?
+  `;
+  const values = [pet_id, user_id];
+
+  con.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error fetching adoption request:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    if (result.length === 0) {
+      // No matching adoption request found
+      res.status(404).send("Adoption request not found");
+      return;
+    }
+
+    // Render the view with adoption request, pet details, pet image, and user details
+    res.render("admin/view_request", { adoptionRequest: result[0] });
+  });
 };

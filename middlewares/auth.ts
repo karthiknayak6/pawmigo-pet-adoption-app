@@ -41,17 +41,17 @@ const customFields = {
 const verifyCallback = (
   username: string,
   password: string,
-  done: (error: any, user?: any | false) => void
+  done: (error: any, user?: any | false, options?: any) => void // Modify the signature of the done callback to include options
 ) => {
   con.query(
-    "SELECT * FROM User WHERE username = ? ",
+    "SELECT * FROM User WHERE username = ?",
     [username],
     function (error: MysqlError | null, results: any, fields?: FieldInfo[]) {
       if (error) return done(error);
 
       const users = results as User[];
       if (users.length === 0) {
-        return done(null, false);
+        return done(null, false, { message: "Invalid username or password" }); // Pass flash message as an option
       }
 
       const isValid = validPassword(
@@ -69,7 +69,7 @@ const verifyCallback = (
       if (isValid) {
         return done(null, user);
       } else {
-        return done(null, false);
+        return done(null, false, { message: "Invalid username or password" }); // Pass flash message as an option
       }
     }
   );
@@ -110,7 +110,7 @@ export function userExists(req: Request, res: Response, next: NextFunction) {
 const shelterVerifyCallback = (
   username: string,
   password: string,
-  done: (error: any, shelter?: Shelter | false) => void
+  done: (error: any, shelter?: Shelter | false, options?: any) => void // Modify the signature of the done callback to include options
 ) => {
   con.query(
     "SELECT * FROM Shelter WHERE username = ?",
@@ -120,7 +120,7 @@ const shelterVerifyCallback = (
 
       const shelters = results as Shelter[];
       if (shelters.length === 0) {
-        return done(null, false);
+        return done(null, false, { message: "Invalid username or password" }); // Pass flash message as an option
       }
 
       const isValid = validPassword(
@@ -138,7 +138,7 @@ const shelterVerifyCallback = (
       if (isValid) {
         return done(null, shelter);
       } else {
-        return done(null, false);
+        return done(null, false, { message: "Invalid username or password" }); // Pass flash message as an option
       }
     }
   );

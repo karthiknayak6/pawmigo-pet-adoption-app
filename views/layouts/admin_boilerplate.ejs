@@ -10,10 +10,46 @@
       href="https://fonts.googleapis.com/css?family=Poppins"
       rel="stylesheet"
     />
+    <script src="/javascripts/flash.js"></script>
+    <style>
+      .flash-message {
+        position: fixed;
+        top: 80px; /* Adjust as needed to bring it down */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%; /* Adjust width as needed */
+        max-width: 500px; /* Adjust max-width as needed */
+        padding: 10px;
+        text-align: center;
+        z-index: 9999;
+      }
+
+      .flash-message.success {
+        background-color: #d4edda; /* Green background color */
+        color: #155724; /* Dark green text color */
+      }
+
+      .flash-message.error {
+        background-color: #f8d7da; /* Red background color */
+        color: #721c24; /* Dark red text color */
+      }
+
+      .flash-message button.close {
+        position: absolute;
+        top: -8px;
+        right: 10px;
+        color: inherit;
+        font-size: 1.5em; /* Increase font size for larger button */
+        padding: 0.5em; /* Increase padding for larger clickable area */
+        border: none; /* Remove default button border */
+        background: none; /* Remove default button background */
+        cursor: pointer;
+      }
+    </style>
   </head>
 
   <body class="bg-light">
-    <%- include('../partials/navbar')%>
+    <%- include('../partials/navbar')%> <%- include('../partials/flash')%>
     <main class="">
       <%- include('../partials/flash')%>
       <div

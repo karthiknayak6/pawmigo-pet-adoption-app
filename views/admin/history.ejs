@@ -1,14 +1,28 @@
 <% layout('layouts/admin_boilerplate')%>
 <div>
-  <% for (history of adoptionHistory) { %>
+  <% for (history of adoptionHistory) { %> <% if (history.status) { %>
   <div
     class="mb-5 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
   >
     <p><%= history.username %></p>
     <p><%= history.pet_name %></p>
     <p><%= history.adoption_date %></p>
-    <div>
-      <p class="text-green-800">Adopted</p>
+    <div class="flex justify-center items-center">
+      <button
+        onclick="window.location.href='/admin/view_req/<%= history.pet_id %>/<%= history.user_id %>'"
+        class="w-fit h-fit px-4 py-2 mx-40 bg-light cursor-pointer hover:bg-slate-300 rounded-md font-semibold text-dark"
+      >
+        View Details
+      </button>
+
+      <div>
+        <% if( history.status === 'adopted') { %>
+        <p class="text-green-800 mr-20">Adopted</p>
+        <% } else if(history.status === "rejected") { %>
+        <p class="text-red-600 mr-20">Rejected</p>
+        <% } %>
+      </div>
+      <% } %>
       <!-- <button class="py-2 px-3 bg-green-700 text-white rounded-md">
         Approve
       </button>

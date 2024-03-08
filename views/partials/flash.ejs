@@ -1,1 +1,38 @@
-<div></div>
+<style>
+  .hidden {
+    display: none;
+  }
+</style>
+
+<% if(success && success.length) { %>
+<div id="success-flash" class="flash-message success">
+  <%= success %>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %> <% if(error && error.length) { %>
+<div id="error-flash" class="flash-message error">
+  <%= error %>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
+<script>
+  window.onload = function () {
+    let closeButtons = document.getElementsByClassName("close");
+
+    for (let i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].addEventListener("click", function () {
+        this.parentElement.classList.add("hidden");
+      });
+    }
+    closeButtons = document.getElementsByClassName("close");
+    for (let i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].addEventListener("click", function () {
+        this.parentElement.classList.add("hidden");
+      });
+    }
+  };
+</script>

@@ -1,0 +1,65 @@
+<% layout('layouts/admin_boilerplate') %>
+<div
+  class="rounded-3xl w-full bg-white shadow-md mb-10 mt-14 container mx-auto py-6"
+>
+  <p class="text-3xl text-primary font-bold ml-10 mt-5 mb-5">
+    Adoption Request Details
+  </p>
+  <div class="flex px-10 text-gray-600 text-2xl items-center mb-2">
+    <div class="h-96 w-[30rem] mt-2">
+      <img
+        src="<%= adoptionRequest.image_name %>"
+        class="object-cover h-full w-full rounded-md shadow-sm"
+      />
+    </div>
+    <div class="ml-10 space-y-8 text-2xl">
+      <div>
+        <span class="font-bold">Pet Name: </span><%= adoptionRequest.pet_name %>
+      </div>
+      <div>
+        <span class="font-bold">Breed:</span> <%= adoptionRequest.breed %>
+      </div>
+      <div><span class="font-bold">Age:</span> <%= adoptionRequest.age %></div>
+      <div>
+        <span class="font-bold">Gender:</span> <%= adoptionRequest.gender %>
+      </div>
+    </div>
+  </div>
+  <!-- User Details -->
+  <div class="mx-10 mt-5 text-xl space-y-3">
+    <p class="text-2xl font-bold">User Details:</p>
+    <!-- <div>
+      <span class="font-bold">User ID:</span> <%= adoptionRequest.user_id %>
+    </div> -->
+    <div>
+      <span class="font-bold">First Name:</span> <%= adoptionRequest.first_name
+      %>
+    </div>
+    <div>
+      <span class="font-bold">Last Name:</span> <%= adoptionRequest.last_name %>
+    </div>
+    <div>
+      <span class="font-bold">Username:</span> <%= adoptionRequest.username %>
+    </div>
+    <div>
+      <span class="font-bold">Email:</span> <%= adoptionRequest.email %>
+    </div>
+  </div>
+  <div class="mx-10 space-y-3 text-xl mt-3">
+    <div>
+      <span class="font-bold">Residence Type:</span> <%=
+      adoptionRequest.residence_type %>
+    </div>
+    <div>
+      <span class="font-bold">Whom getting pet for:</span> <%=
+      adoptionRequest.pet_for %>
+    </div>
+    <div>
+      <span class="font-bold">Reason for adopting pet:</span> <%=
+      adoptionRequest.reason_for_adoption %>
+    </div>
+    <div>
+      <span class="font-bold">Care Plan:</span> <%= adoptionRequest.care_plan %>
+    </div>
+  </div>
+</div>
