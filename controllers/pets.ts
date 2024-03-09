@@ -57,10 +57,11 @@ export const renderSearchResults = (req: Request, res: Response) => {
 
   // Construct the SQL query based on the provided parameters
   let sql = `
-    SELECT Pet.*, PetImage.image_name, Shelter.*
+    SELECT Pet.*, PetImage.image_name, Shelter.*, Breed.*
     FROM Pet
     LEFT JOIN PetImage ON Pet.pet_id = PetImage.pet_id
     LEFT JOIN Shelter ON Pet.shelter_id = Shelter.shelter_id
+    LEFT JOIN Breed ON Pet.pet_id = Breed.pet_id
     WHERE 1
   `;
 
@@ -109,7 +110,7 @@ export const renderSearchResults = (req: Request, res: Response) => {
     const finalResults = Object.values(groupedResults);
 
     // Render the view and pass search results data
-    console.log("final RESLUTS::::", finalResults);
+    console.log("final RESULTS::::", finalResults);
     res.render("users/search_results", { searchResults: finalResults });
   });
 };

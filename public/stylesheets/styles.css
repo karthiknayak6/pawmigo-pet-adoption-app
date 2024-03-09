@@ -725,10 +725,6 @@ video {
   margin-top: 1.75rem;
 }
 
-.mt-96 {
-  margin-top: 24rem;
-}
-
 .block {
   display: block;
 }
@@ -1129,16 +1125,6 @@ video {
 .py-9 {
   padding-top: 2.25rem;
   padding-bottom: 2.25rem;
-}
-
-.py-96 {
-  padding-top: 24rem;
-  padding-bottom: 24rem;
-}
-
-.py-10 {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
 }
 
 .pl-10 {

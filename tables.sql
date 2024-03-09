@@ -70,8 +70,9 @@ CREATE TABLE AdoptionRequest (
 );
 
 CREATE TABLE AdoptionHistory (
-    pet_id INT NOT NULL PRIMARY KEY,
+    pet_id INT NOT NULL,
     user_id INT NOT NULL,
+    PRIMARY KEY (pet_id, user_id),
     adoption_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (pet_id) REFERENCES Pet(pet_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
@@ -81,7 +82,7 @@ CREATE TABLE AdoptionHistory (
 /* TRIGGERS */
 DELIMITER //
 /* Data Validation Trigger: This trigger will prevent a user from adopting a pet that is not available. */
-CREATE TRIGGER before_adoption_insert BEFORE INSERT ON AdoptionHistory
+/* CREATE TRIGGER before_adoption_insert BEFORE INSERT ON AdoptionHistory
 FOR EACH ROW
 BEGIN
     DECLARE pet_available BOOLEAN;
@@ -89,7 +90,7 @@ BEGIN
     IF pet_available = FALSE THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This pet is not available for adoption.';
     END IF;
-END //
+END // */
 
 /* Update Pet Status Trigger: This trigger will update the is_available status of a pet in the Pet table to FALSE when a new adoption record is inserted into the AdoptionHistory table. */
 CREATE TRIGGER after_adoption_insert AFTER INSERT ON AdoptionHistory

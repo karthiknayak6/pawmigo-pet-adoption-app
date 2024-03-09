@@ -182,7 +182,9 @@
         id="dog"
         class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-start"
       >
-        <% for (let pet of pets) {%> <% if (pet.pet_type === "dog") { %>
+        <% let dogCount = 0; %> <% for (let i = 0; i < pets.length && dogCount <
+        8; i++) { %> <% let pet = pets[i]; %> <% if (pet.pet_type === "dog") {
+        %> <% dogCount++; %>
         <div
           onclick="window.location.href = `pets/<%=pet.pet_id%>`"
           class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light max-w-[22rem]"
@@ -204,6 +206,7 @@
         </div>
         <% } %> <% } %>
       </div>
+
       <div
         class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
       >
@@ -217,10 +220,11 @@
         >
       </div>
       <div
-        id="cat"
-        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-start"
+        id="other"
+        class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
       >
-        <% for (let pet of pets) {%> <% if (pet.pet_type === "cat") { %>
+        <% let catCount = 0; %> <% for (let pet of pets) { %> <% if
+        (pet.pet_type === "cat" && catCount < 8) { %> <% catCount++; %>
         <div
           onclick="window.location.href = `pets/<%=pet.pet_id%>`"
           class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light max-w-[22rem]"
@@ -242,6 +246,7 @@
         </div>
         <% } %> <% } %>
       </div>
+
       <div
         class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
       >
@@ -258,7 +263,9 @@
         id="other"
         class="rounded-3xl flex w-full bg-white shadow-md items-center flex-wrap gap-y-7 py-8 px-6 justify-center"
       >
-        <% for (let pet of pets) {%> <% if (pet.pet_type === "other") { %>
+        <% let petCount = 0; %> <% for (let i = 0; i < pets.length && petCount <
+        8; i++) { %> <% let pet = pets[i]; %> <% if (pet.pet_type === "other") {
+        %> <% petCount++; %>
         <div
           onclick="window.location.href = `pets/<%=pet.pet_id%>`"
           class="h-80 flex-1 bg-light shadow-md flex rounded-md flex-col items-center mr-2 ml-2 cursor-pointer hover:shadow-lg hover:shadow-primary_light max-w-[22rem]"
@@ -280,6 +287,7 @@
         </div>
         <% } %> <% } %>
       </div>
+
       <div
         class="mb-4 shadow-sm py-6 bg-white rounded-full flex w-full justify-between mt-14"
       >

@@ -1,41 +1,38 @@
-<% layout('layouts/admin_boilerplate')%>
-<div>
-  <% for (request of requests) { if(request.status != "rejected" &&
-  request.status != "adopted") {%>
-  <div
-    class="mb-10 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
-  >
-    <p><%= request.username %></p>
-    <p><%= request.pet_name %></p>
-    <p><%= request.reason_for_adoption %></p>
-    <div>
-      <button
-        onclick="window.location.href='/admin/view_req/<%= request.pet_id %>/<%= request.user_id %>'"
-        class="w-fit h-fit px-4 py-2 mx-40 bg-light cursor-pointer hover:bg-slate-300 rounded-md font-semibold text-dark"
-      >
-        View Details
-      </button>
-      <button
-        onclick="window.location.href='/admin/<%= request.pet_id %>/accept'"
-        class="py-2 px-3 bg-green-700 text-white rounded-md"
-      >
-        Approve
-      </button>
-      <button
-        onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/reject'"
-        class="py-2 px-3 bg-red-700 text-white rounded-md"
-      >
-        Reject
-      </button>
-      <% if(request.status === "accepted") {%>
-      <button
-        onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/adopt'"
-        class="py-2 px-3 bg-blue-700 text-white rounded-md"
-      >
-        Mark as Adopted
-      </button>
-      <% }} %>
-    </div>
+<% layout('layouts/admin_boilerplate')%><% for (request of requests) {
+if(request.status != "rejected" && request.status != "adopted") { %>
+<div
+  class="mb-10 shadow-sm py-6 bg-white rounded-md flex w-full justify-around items-center container mx-auto mt-5 text-lg font-bold text-dark"
+>
+  <p><%= request.username %></p>
+  <p><%= request.pet_name %></p>
+
+  <div>
+    <button
+      onclick="window.location.href='/admin/view_req/<%= request.pet_id %>/<%= request.user_id %>'"
+      class="w-fit h-fit px-4 py-2 mx-40 bg-light cursor-pointer hover:bg-slate-300 rounded-md font-semibold text-dark"
+    >
+      View Details
+    </button>
+    <button
+      onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/accept'"
+      class="py-2 px-3 bg-green-700 text-white rounded-md"
+    >
+      Approve
+    </button>
+    <button
+      onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/reject'"
+      class="py-2 px-3 bg-red-700 text-white rounded-md"
+    >
+      Reject
+    </button>
+    <% if(request.status === "accepted") { %>
+    <button
+      onclick="window.location.href='/admin/<%= request.pet_id %>/<%= request.user_id %>/adopt'"
+      class="py-2 px-3 bg-blue-700 text-white rounded-md"
+    >
+      Mark as Adopted
+    </button>
+    <% } %>
   </div>
-  <% } %>
 </div>
+<% }} %>

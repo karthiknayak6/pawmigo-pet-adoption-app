@@ -178,8 +178,9 @@ export const adminSignup = async (req: Request, res: Response) => {
   );
 };
 export const adminLogin = passport.authenticate("shelter", {
-  failureRedirect: "/login-failure",
+  failureRedirect: "/admin/login",
   successRedirect: "/admin",
+  failureFlash: true,
 });
 
 export const logout = (req: Request, res: Response, next: NextFunction) => {
@@ -189,6 +190,8 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
       console.error(err);
       next(err);
     } else {
+      res.status(200);
+      req.flash("success", "Successfully Logged out!!");
       res.redirect("/admin");
     }
   });
@@ -323,163 +326,185 @@ export const renderRequests = (
 export const acceptAdopt = (req: Request, res: Response) => {
   const pet_id = req.params.pet_id;
   const shelter_id = req.user.shelter_id;
+  const user_id = req.params.user_id;
 
-  // Update the status of the adoption request to 'accepted'
-  const sql = `
-      UPDATE AdoptionRequest 
-      SET status = 'accepted' 
-      WHERE pet_id = ? AND user_id IN (
-        SELECT user_id FROM Pet WHERE pet_id = ? AND shelter_id = ?
-      )
-    `;
-  const values = [pet_id, pet_id, shelter_id];
-
-  con.query(sql, values, async (err, result) => {
+  // Check if any request for this pet has already been approved
+  const checkApprovalSQL = `
+      SELECT status
+      FROM AdoptionRequest 
+      WHERE pet_id = ? AND status = 'accepted'
+  `;
+  con.query(checkApprovalSQL, [pet_id], async (err, rows) => {
     if (err) {
-      console.error("Error accepting adoption request:", err);
+      console.error("Error checking approval status:", err);
       res.status(500).send("Internal Server Error");
       return;
     }
 
-    if (result.affectedRows === 0) {
-      // No adoption request found for the specified pet_id and shelter_id
-      res.status(404);
-      req.flash("error", "Adoption request not found");
-      res.redirect("/admin/requests");
+    if (rows.length > 0) {
+      res
+        .status(400)
+        .send("Another request for this pet has already been approved");
       return;
     }
 
-    // Fetch user's email
-    const userEmailSQL = `
-      SELECT User.email
-      FROM User
-      INNER JOIN AdoptionRequest ON User.user_id = AdoptionRequest.user_id
-      WHERE AdoptionRequest.pet_id = ? AND AdoptionRequest.status = 'accepted'
-    `;
-    con.query(userEmailSQL, [pet_id], async (err, rows) => {
+    const sql = `
+    UPDATE AdoptionRequest 
+    SET status = 'accepted' 
+    WHERE pet_id = ? AND user_id = ? AND EXISTS (
+        SELECT 1
+        FROM Pet
+        WHERE Pet.pet_id = ? AND Pet.shelter_id = ? AND AdoptionRequest.pet_id = Pet.pet_id AND AdoptionRequest.user_id = ?
+    )
+`;
+    const values = [pet_id, user_id, pet_id, shelter_id, user_id];
+    con.query(sql, values, async (err, result) => {
       if (err) {
-        console.error("Error fetching user email:", err);
+        console.error("Error accepting adoption request:", err);
         res.status(500).send("Internal Server Error");
         return;
       }
 
-      if (rows.length === 0) {
-        // No user found for the specified pet_id and adoption status
-        res.status(404).send("User not found");
+      if (result.affectedRows === 0) {
+        // No adoption request found for the specified pet_id and shelter_id
+        res.status(404);
+        req.flash("error", "Adoption request not found");
+        res.redirect("/admin/requests");
         return;
       }
 
-      const userEmail = rows[0].email;
+      // Fetch user's email
+      const userEmailSQL = `
+              SELECT User.email
+              FROM User
+              INNER JOIN AdoptionRequest ON User.user_id = AdoptionRequest.user_id
+              WHERE AdoptionRequest.pet_id = ? AND AdoptionRequest.status = 'accepted'
+          `;
+      con.query(userEmailSQL, [pet_id], async (err, rows) => {
+        if (err) {
+          console.error("Error fetching user email:", err);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
 
-      // Create nodemailer transporter
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.NM_USER,
-          pass: process.env.NM_PASSWORD,
-        },
+        if (rows.length === 0) {
+          // No user found for the specified pet_id and adoption status
+          res.status(404).send("User not found");
+          return;
+        }
+
+        const userEmail = rows[0].email;
+
+        // Create nodemailer transporter
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.NM_USER,
+            pass: process.env.NM_PASSWORD,
+          },
+        });
+
+        // Configure email options
+        const mailOptions = {
+          from: {
+            name: "Pawmigo",
+            address: process.env.NM_USER,
+          },
+          to: userEmail,
+          subject:
+            "Congratulations!!, your pet adoption request has been approved!", // Subject line
+          html: `<p>Dear Pet Adopter,</p>
+                  <p>Congratulations! We're thrilled to inform you that your pet adoption request has been approved.</p>
+                  <p>The next step in the process is to visit our shelter to complete the adoption and bring your new furry friend home. Our shelter staff will be delighted to assist you in finalizing the adoption process and providing you with all the necessary information about your new pet.</p>
+                  <p>Please feel free to contact us if you have any questions or need further assistance. We look forward to seeing you soon!</p>
+                  <p>Best Regards,</p>
+                  <p>The Pawmigo Team</p>
+              `, // html body
+        };
+
+        // Send email
+        try {
+          await transporter.sendMail(mailOptions);
+          console.log("Email sent successfully");
+        } catch (error) {
+          console.error("Error sending email:", error);
+        }
+
+        // Adoption request status updated and email sent successfully
+        res.status(200);
+        req.flash(
+          "success",
+          "Adoption request status updated and email sent successfully"
+        );
+
+        res.redirect("/admin/requests");
       });
-
-      // Configure email options
-      const mailOptions = {
-        from: {
-          name: "Pawmigo",
-          address: process.env.NM_USER,
-        },
-        to: userEmail,
-        subject:
-          "Congratulations!!, your pet adoption request has been approved!", // Subject line
-        html: `<p>Dear Pet Adopter,</p>
-        <p>Congratulations! We're thrilled to inform you that your pet adoption request has been approved.</p>
-        <p>The next step in the process is to visit our shelter to complete the adoption and bring your new furry friend home. Our shelter staff will be delighted to assist you in finalizing the adoption process and providing you with all the necessary information about your new pet.</p>
-        <p>Please feel free to contact us if you have any questions or need further assistance. We look forward to seeing you soon!</p>
-        <p>Best Regards,</p>
-        <p>The Pawmigo Team</p>
-      `, // html body
-      };
-
-      // Send email
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log("Email sent successfully");
-      } catch (error) {
-        console.error("Error sending email:", error);
-      }
-
-      // Adoption request status updated and email sent successfully
-      res.status(200);
-      req.flash(
-        "success",
-        "Adoption request status updated and email sent successfully"
-      );
-
-      res.redirect("/admin/requests");
     });
   });
 };
 
 export const adoptPet = (req: Request, res: Response) => {
   const pet_id = req.params.pet_id;
-  const shelter_id = req.user.shelter_id;
   const user_id = req.params.user_id;
 
-  // Update the status of the adoption request to 'adopted'
-  const adoptionUpdateSQL = `
-      UPDATE AdoptionRequest 
-      SET status = 'adopted' 
-      WHERE pet_id = ? AND user_id IN (
-        SELECT user_id FROM Pet WHERE pet_id = ? AND shelter_id = ?
-      )
-    `;
-  const adoptionValues = [pet_id, pet_id, shelter_id];
-
-  con.query(adoptionUpdateSQL, adoptionValues, (err, result) => {
+  // Check if the adoption request for this pet has been approved
+  const checkApprovalSQL = `
+      SELECT status
+      FROM AdoptionRequest 
+      WHERE pet_id = ? AND user_id = ? AND status = 'accepted'
+  `;
+  con.query(checkApprovalSQL, [pet_id, user_id], async (err, rows) => {
     if (err) {
-      console.error("Error updating adoption request:", err);
+      console.error("Error checking approval status:", err);
       res.status(500).send("Internal Server Error");
       return;
     }
 
-    if (result.affectedRows === 0) {
-      // No adoption request found for the specified pet_id and shelter_id
-      res.status(404).send("Adoption request not found");
+    if (rows.length === 0) {
+      // Adoption request has not been approved yet
+      res.status(400).send("Adoption request has not been approved yet");
       return;
     }
 
-    // Insert a record into AdoptionHistory table
-    const adoptionHistorySQL = `
-        INSERT INTO AdoptionHistory (pet_id, user_id, adoption_date)
-        VALUES (?, ?, NOW())
+    // Update the status of the adoption request to 'adopted'
+    const adoptionUpdateSQL = `
+          UPDATE AdoptionRequest 
+          SET status = 'adopted' 
+          WHERE pet_id = ? AND user_id = ?
       `;
-    const adoptionHistoryValues = [pet_id, user_id];
+    const adoptionValues = [pet_id, user_id];
 
-    con.query(adoptionHistorySQL, adoptionHistoryValues, (err, result) => {
+    con.query(adoptionUpdateSQL, adoptionValues, (err, result) => {
       if (err) {
-        console.error("Error adding adoption to history:", err);
+        console.error("Error updating adoption request:", err);
         res.status(500).send("Internal Server Error");
         return;
       }
 
-      // Delete the adoption request tuple
-      // const requestDeleteSQL = `
-      //     DELETE FROM AdoptionRequest
-      //     WHERE pet_id = ? AND user_id = ?
-      // `;
-      // const requestDeleteValues = [pet_id, user_id];
+      if (result.affectedRows === 0) {
+        // No adoption request found for the specified pet_id and user_id
+        res.status(404).send("Adoption request not found");
+        return;
+      }
 
-      // con.query(requestDeleteSQL, requestDeleteValues, (err, result) => {
-      //   if (err) {
-      //     console.error("Error deleting adoption request:", err);
-      //     res.status(500).send("Internal Server Error");
-      //     return;
-      //   }
+      // Insert a record into AdoptionHistory table
+      const adoptionHistorySQL = `
+              INSERT INTO AdoptionHistory (pet_id, user_id, adoption_date)
+              VALUES (?, ?, NOW())
+          `;
+      const adoptionHistoryValues = [pet_id, user_id];
 
-      //   // Adoption recorded and request deleted successfully
+      con.query(adoptionHistorySQL, adoptionHistoryValues, (err, result) => {
+        if (err) {
+          console.error("Error adding adoption to history:", err);
+          res.status(500).send("Internal Server Error");
+          return;
+        }
 
-      // });res.status(200).send("Pet adopted successfully");
-      res.status(200);
-      req.flash("success", "Ped adopted successfully");
-      res.redirect("/admin/requests");
+        res.status(200);
+        req.flash("success", "Pet adopted successfully");
+        res.redirect("/admin/requests");
+      });
     });
   });
 };
@@ -488,47 +513,107 @@ export const rejectRequest = (req: Request, res: Response) => {
   const pet_id = req.params.pet_id;
   const user_id = req.params.user_id;
 
-  // Update the status of the adoption request to 'rejected'
-  const rejectionUpdateSQL = `
-    UPDATE AdoptionRequest 
-    SET status = 'rejected' 
-    WHERE pet_id = ? AND user_id = ?
+  // Fetch user's email
+  const fetchUserEmailSQL = `
+    SELECT email
+    FROM User
+    WHERE user_id = ?
   `;
-  const rejectionValues = [pet_id, user_id];
-
-  con.query(rejectionUpdateSQL, rejectionValues, (err, result) => {
+  con.query(fetchUserEmailSQL, [user_id], (err, rows) => {
     if (err) {
-      console.error("Error rejecting adoption request:", err);
-      res.status(500);
-      req.flash("error", "Internal server error");
-      res.redirect("/admin/requests");
+      console.error("Error fetching user email:", err);
+      res.status(500).send("Internal Server Error");
       return;
     }
 
-    if (result.affectedRows === 0) {
-      // No adoption request found for the specified pet_id and user_id
-      res.status(404).send("Adoption request not found");
+    if (rows.length === 0) {
+      // User not found
+      res.status(404).send("User not found");
       return;
     }
 
-    // Add the pet to the adoption history
-    const adoptionHistorySQL = `
-      INSERT INTO AdoptionHistory (pet_id, user_id, adoption_date)
-      VALUES (?, ?, NOW())
+    const userEmail = rows[0].email;
+
+    // Update the status of the adoption request to 'rejected'
+    const rejectionUpdateSQL = `
+      UPDATE AdoptionRequest 
+      SET status = 'rejected' 
+      WHERE pet_id = ? AND user_id = ?
     `;
-    const adoptionHistoryValues = [pet_id, user_id];
+    const rejectionValues = [pet_id, user_id];
 
-    con.query(adoptionHistorySQL, adoptionHistoryValues, (err, result) => {
+    con.query(rejectionUpdateSQL, rejectionValues, async (err, result) => {
       if (err) {
-        console.error("Error adding pet to adoption history:", err);
+        console.error("Error rejecting adoption request:", err);
         res.status(500).send("Internal Server Error");
         return;
       }
 
-      // Adoption request rejected and pet added to adoption history successfully
-      res.status(200);
-      req.flash("success", "Adoption request rejected successfully!!");
-      res.redirect("/admin/requests");
+      if (result.affectedRows === 0) {
+        // No adoption request found for the specified pet_id and user_id
+        res.status(404).send("Adoption request not found");
+        return;
+      }
+
+      // Insert the rejected request into the AdoptionHistory table
+      const adoptionHistorySQL = `
+        INSERT INTO AdoptionHistory (pet_id, user_id, adoption_date)
+        VALUES (?, ?, NOW())
+      `;
+      const adoptionHistoryValues = [pet_id, user_id];
+
+      con.query(
+        adoptionHistorySQL,
+        adoptionHistoryValues,
+        async (err, result) => {
+          if (err) {
+            console.error(
+              "Error adding rejected request to adoption history:",
+              err
+            );
+            res.status(500).send("Internal Server Error");
+            return;
+          }
+
+          // Create nodemailer transporter
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.NM_USER,
+              pass: process.env.NM_PASSWORD,
+            },
+          });
+
+          // Configure email options
+          const mailOptions = {
+            from: {
+              name: "Pawmigo",
+              address: process.env.NM_USER,
+            },
+            to: userEmail,
+            subject: "Your pet adoption request has been rejected", // Subject line
+            html: `<p>Dear Pet Adopter,</p>
+              <p>We regret to inform you that your pet adoption request has been rejected.</p>
+              <p>If you have any questions or need further assistance, please feel free to contact us.</p>
+              <p>Best Regards,</p>
+              <p>The Pawmigo Team</p>
+            `, // html body
+          };
+
+          // Send email
+          try {
+            await transporter.sendMail(mailOptions);
+            console.log("Rejection email sent successfully");
+          } catch (error) {
+            console.error("Error sending rejection email:", error);
+          }
+
+          // Adoption request rejected, rejection email sent, and added to adoption history successfully
+          res.status(200);
+          req.flash("success", "Adoption request rejected successfully");
+          res.redirect("/admin/requests");
+        }
+      );
     });
   });
 };

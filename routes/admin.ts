@@ -43,7 +43,7 @@ adminRouter
   .get(isAdminLoggedIn, renderAddPet)
   .post(isAdminLoggedIn, upload.single("image"), addPet);
 adminRouter.route("/requests").get(isAdminLoggedIn, renderRequests);
-adminRouter.route("/:pet_id/accept").get(isAdminLoggedIn, acceptAdopt);
+adminRouter.route("/:pet_id/:user_id/accept").get(isAdminLoggedIn, acceptAdopt);
 adminRouter.route("/history").get(isAdminLoggedIn, renderHistory);
 adminRouter.route("/:pet_id/delete").get(isAdminLoggedIn, deletePet);
 adminRouter.route("/:pet_id/:user_id/adopt").get(isAdminLoggedIn, adoptPet);
