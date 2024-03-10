@@ -52,8 +52,9 @@ export const renderSearchResults = (req: Request, res: Response) => {
   console.log(req.query);
   let pet_type = req.query.pet;
   let pet_location = req.query.location;
+  let breed = req.query.breed; // Add breed parameter
 
-  console.log(pet_type, pet_location);
+  console.log(pet_type, pet_location, breed);
 
   // Construct the SQL query based on the provided parameters
   let sql = `
@@ -74,6 +75,14 @@ export const renderSearchResults = (req: Request, res: Response) => {
       SELECT 1 FROM Breed WHERE Pet.pet_id = Breed.pet_id AND type = ?
     )`;
     values.push(pet_type);
+  }
+
+  if (breed) {
+    // Add condition for breed
+    sql += ` AND EXISTS (
+      SELECT 1 FROM Breed WHERE Pet.pet_id = Breed.pet_id AND breed = ?
+    )`;
+    values.push(breed);
   }
 
   if (pet_location) {
